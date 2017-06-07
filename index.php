@@ -58,7 +58,7 @@
 <div class="container">
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#staff_list" aria-controls="home" role="tab" data-toggle="tab">Staff List</a></li>
+    <li role="presentation" class="active"><a href="#staff_list" aria-controls="home" role="tab" data-toggle="tab" onclick="getStaffInfo()">Staff List</a></li>
 
     <li role="presentation"><a href="#add_staff" aria-controls="profile" role="tab" data-toggle="tab">Add Staff</a></li>
 
@@ -68,215 +68,6 @@
   <!-- Tab panes -->
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="staff_list">
-
-
-      <!--<div id="staff_card">
-        <div class="row">
-          <div class="col-md-12">
-            <div id="staff_info_container">
-              <ul id="staff_info">
-                <li>
-                    <span class="label">First Name</span>
-                    <span class="value" id="staff_first_name">Mamadou</span>
-                </li>
-                <li>
-                    <span class="label">Middle Name</span>
-                    <span class="value" id="staff_middle_name">Alieu</span>
-                </li>
-                <li>
-                    <span class="label">Last Name</span>
-                    <span class="value" id="staff_last_name">Jallow</span>
-                </li>
-                <li>
-                    <span class="label">Designation</span>
-                    <span class="value" id="staff_first_name">Director General</span>
-                </li>
-                <li>
-                    <span class="label">Gender</span>
-                    <span class="value">Male</span>
-                </li>
-              </ul>
-            </div>
-            <div id="staff_pic_container">
-              <img src="img/placeHolder.JPG" alt="" class="img-circle img-responsive" width="90" height="90">
-            </div>
-          </div>
-        </div>
-      </div>-->
-
-
-
-
-      <!--<div id="staff_card1">
-        <div class="row">
-          <div class="col-md-12">
-            <div id="staff_info_container">
-              <ul id="staff_info">
-                <li>
-                    <span class="label">First Name</span>
-                    <span class="value">Mamadou</span>
-                </li>
-                <li>
-                    <span class="label">Middle Name</span>
-                    <span class="value">Alieu</span>
-                </li>
-                <li>
-                    <span class="label">Last Name</span>
-                    <span class="value">Jallow</span>
-                </li>
-                <li>
-                    <span class="label">Designation</span>
-                    <span class="value">Director General</span>
-                </li>
-                <li>
-                    <span class="label">Gender</span>
-                    <span class="value">Male</span>
-                </li>
-              </ul>
-            </div>
-            <div id="staff_pic_container">
-              <img src="img/placeHolder.JPG" alt="" class="img-circle img-responsive" width="90" height="90">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="staff_card1">
-        <div class="row">
-          <div class="col-md-12">
-            <div id="staff_info_container">
-              <ul id="staff_info">
-                <li>
-                    <span class="label">First Name</span>
-                    <span class="value">Mamadou</span>
-                </li>
-                <li>
-                    <span class="label">Middle Name</span>
-                    <span class="value">Alieu</span>
-                </li>
-                <li>
-                    <span class="label">Last Name</span>
-                    <span class="value">Jallow</span>
-                </li>
-                <li>
-                    <span class="label">Designation</span>
-                    <span class="value">Director General</span>
-                </li>
-                <li>
-                    <span class="label">Gender</span>
-                    <span class="value">Male</span>
-                </li>
-              </ul>
-            </div>
-            <div id="staff_pic_container">
-              <img src="img/placeHolder.JPG" alt="" class="img-circle img-responsive" width="90" height="90">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="staff_card1">
-        <div class="row">
-          <div class="col-md-12">
-            <div id="staff_info_container">
-              <ul id="staff_info">
-                <li>
-                    <span class="label">First Name</span>
-                    <span class="value">Mamadou</span>
-                </li>
-                <li>
-                    <span class="label">Middle Name</span>
-                    <span class="value">Alieu</span>
-                </li>
-                <li>
-                    <span class="label">Last Name</span>
-                    <span class="value">Jallow</span>
-                </li>
-                <li>
-                    <span class="label">Designation</span>
-                    <span class="value">Director General</span>
-                </li>
-                <li>
-                    <span class="label">Gender</span>
-                    <span class="value">Male</span>
-                </li>
-              </ul>
-            </div>
-            <div id="staff_pic_container">
-              <img src="img/placeHolder.JPG" alt="" class="img-circle img-responsive" width="90" height="90">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="staff_card1">
-        <div class="row">
-          <div class="col-md-12">
-            <div id="staff_info_container">
-              <ul id="staff_info">
-                <li>
-                    <span class="label">First Name</span>
-                    <span class="value">Mamadou</span>
-                </li>
-                <li>
-                    <span class="label">Middle Name</span>
-                    <span class="value">Alieu</span>
-                </li>
-                <li>
-                    <span class="label">Last Name</span>
-                    <span class="value">Jallow</span>
-                </li>
-                <li>
-                    <span class="label">Designation</span>
-                    <span class="value">Director General</span>
-                </li>
-                <li>
-                    <span class="label">Gender</span>
-                    <span class="value">Male</span>
-                </li>
-              </ul>
-            </div>
-            <div id="staff_pic_container">
-              <img src="img/placeHolder.JPG" alt="" class="img-circle img-responsive" width="90" height="90">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="staff_card1">
-        <div class="row">
-          <div class="col-md-12">
-            <div id="staff_info_container">
-              <ul id="staff_info">
-                <li>
-                    <span class="label">First Name</span>
-                    <span class="value">Mamadou</span>
-                </li>
-                <li>
-                    <span class="label">Middle Name</span>
-                    <span class="value">Alieu</span>
-                </li>
-                <li>
-                    <span class="label">Last Name</span>
-                    <span class="value">Jallow</span>
-                </li>
-                <li>
-                    <span class="label">Designation</span>
-                    <span class="value">Director General</span>
-                </li>
-                <li>
-                    <span class="label">Gender</span>
-                    <span class="value">Male</span>
-                </li>
-              </ul>
-            </div>
-            <div id="staff_pic_container">
-              <img src="img/placeHolder.JPG" alt="" class="img-circle img-responsive" width="90" height="90">
-            </div>
-          </div>
-        </div>
-      </div>-->
-
     </div>
     <div role="tabpanel" class="tab-pane" id="add_staff" class="active">
       <div></div><br>
@@ -400,8 +191,9 @@
           </div>
           <div class="col-md-2">
             <div id="profile_pic_section">
-              <img src="img/placeHolder.JPG" alt="" class="img-circle" width="175" height="175">
-              <input type="file" name="image" class="form-control" id="file_picker">
+              <img src="img/placeHolder.JPG" alt="" class="img-circle" width="175" height="175" id="profile_picture">
+              <span id="profile_pic_span" style="color: red;"></span>
+              <input type="file" name="image" class="form-control" id="picture_picker" onchange="validatePhoto()">
             </div>
           </div>
         </div>

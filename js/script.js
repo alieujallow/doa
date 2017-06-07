@@ -288,14 +288,16 @@ function addStaff()
     var region = document.forms["add_staff_form"]["region"].value;
     var unit = document.forms["add_staff_form"]["unit"].value;
     var otherSection = document.forms["add_staff_form"]["other_section"].value;
-
+    var profilePic=getStaffProfilePic();
+    
     //sets the url
     url= "controllers/staffController.php?first_name="
         +firstName+"&middle_name="+middleName+"&last_name="+lastName+"&date_of_birth="
         +dateOfBirth+"&gender="+gender+"&designation="+designation+"&address="+address
         +"&email="+email+"&telephone="+telephone+"&date_of_appointment="+dateOfAppointment
         +"&payroll_number="+payrollNumber+"&grade="+grade+"&qualification="+qualification
-        +"&region="+region+"&unit="+unit+"&other_section="+otherSection+"&add_staff=yes";
+        +"&region="+region+"&unit="+unit+"&other_section="+otherSection+"profile_pic="+profilePic
+        +"&add_staff=yes";
 
     //calls the ajax function
     ajax(url, printAddStaffResponse);
@@ -679,4 +681,58 @@ function printStaffInfo(xhttp)
     staffCard.appendChild(row);
     staffList.appendChild(staffCard);
   }
+}
+
+//uploads the photo
+function validatePhoto()
+{
+   //selects and previews the file
+   var img =  document.getElementById('profile_picture');
+   var filePicker=document.getElementById("picture_picker");
+   var profilePictureSpan=document.getElementById("profile_pic_span");
+
+   //getting file properties
+   if (filePicker.value=="") 
+   {
+    return false;
+   }
+   var fileExtension = filePicker.value.split('.').pop().toLowerCase();
+   var fileSize = filePicker.files[0].size;
+
+   //checks for the image extension
+   if (fileExtension =="jpeg" || fileExtension =="jpg" || fileExtension =="png" || fileExtension =="gif")
+    {
+      //checks for the file size
+      if (fileSize<=20000) 
+      {
+        var file= filePicker.files[0];
+        img.src = window.URL.createObjectURL(file);
+        profilePictureSpan.innerHTML="";
+        return true;
+      }
+      else
+      {
+         //file extension not supported
+         profilePictureSpan.innerHTML="File size too large";
+      }
+    }
+    else
+    {
+      //file extension not supported
+      profilePictureSpan.innerHTML="File format not supported";
+    }
+}
+
+//returns profile picture
+function getStaffProfilePic()
+{
+   var file="file_not_selected";
+    //validates the picture
+    if(validatePhoto())
+    {
+      var filePicker=document.getElementById("picture_picker");
+      var file= filePicker.files[0];
+      return file;
+    }
+     return file;
 }
