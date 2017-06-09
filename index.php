@@ -58,18 +58,18 @@
 <div class="container">
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#staff_list" aria-controls="home" role="tab" data-toggle="tab" onclick="getStaffInfo()">Staff List</a></li>
+    <li role="presentation"><a href="#staff_list" aria-controls="home" role="tab" data-toggle="tab" onclick="getStaffInfo()">Staff List</a></li>
 
-    <li role="presentation"><a href="#add_staff" aria-controls="profile" role="tab" data-toggle="tab">Add Staff</a></li>
+    <li role="presentation" class="active"><a href="#add_staff" aria-controls="profile" role="tab" data-toggle="tab">Add Staff</a></li>
 
     <li role="presentation"><a href="#add_user" aria-controls="messages" role="tab" data-toggle="tab">Add User</a></li>
   </ul>
 
   <!-- Tab panes -->
   <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="staff_list">
+    <div role="tabpanel" class="tab-pane" id="staff_list">
     </div>
-    <div role="tabpanel" class="tab-pane" id="add_staff" class="active">
+    <div role="tabpanel" class="tab-pane active" id="add_staff" class="active">
       <div></div><br>
       <form name="add_staff_form" onsubmit="return validateAddStaffForm()" action="" method="GET" id="add_staff_form">
         <div class="row">
@@ -198,10 +198,87 @@
           </div>
         </div>
     </form>
-
     </div>
+     <!-- setup tab pane -->
     <div role="tabpanel" class="tab-pane" id="add_user">
-      asdfsadf
+    <div></div><br>
+    <div class="row">
+    <div class="panel panel-success col-md-4">
+      <div class="panel-heading">Add User</div>
+      <div class="panel-body">
+        <form name="add_user_form" onsubmit="return validateAddUserForm()" action="" method="GET" id="add_user_form">
+          <div class="form-group">
+            <label>Username</label>
+            <input type="text" class="form-control" id="username" placeholder="Username" name="username">
+            <span id="username_span" style="color: red;"></span>
+          </div>
+          <div class="form-group">
+            <label>Role</label><br>
+              <select id="role" class="form-control">
+                <option value="">Select..</option>
+              </select>
+              <span id="role_span" style="color: red;"></span>
+          </div>
+            <button type="submit" class="btn btn-success form-control" >Add</button> 
+        </form>
+      </div>
+    </div>
+     <div class="panel panel-success col-md-4">
+      <div class="panel-heading">Add Unit</div>
+      <div class="panel-body">
+        <form name="add_unit_form" onsubmit="return validateAddUnitForm()" action="" method="GET" id="add_unit_form">
+          <div class="form-group">
+            <label>Unit Name</label>
+            <input type="text" class="form-control" id="unit" placeholder="Unit" name="unit">
+            <span id="unit_span_name" style="color: red;"></span>
+          </div>
+            <button type="submit" class="btn btn-success form-control">Add</button> 
+        </form>
+      </div>
+    </div>
+    <div class="panel panel-success col-md-4">
+      <div class="panel-heading">Add Region</div>
+      <div class="panel-body">
+        <form name="add_region_form" onsubmit="return validateAddRegionForm()" action="" method="GET" id="add_region_form">
+          <div class="form-group">
+            <label>Region Name</label>
+            <input type="text" class="form-control" id="region" placeholder="Region" name="region">
+            <span id="region_span_name" style="color: red;"></span>
+          </div>
+            <button type="submit" class="btn btn-success form-control">Add</button> 
+        </form>
+      </div>
+    </div>
+    </div>
+    <!-- second row -->
+    <div class="row">
+      <div class="panel panel-success col-md-4">
+      <div class="panel-heading">Add Qualification</div>
+      <div class="panel-body">
+        <form name="add_qualification_form" onsubmit="return validateAddQualificationForm()" action="" method="GET" id="add_qualification_form">
+          <div class="form-group">
+            <label>Quaification Name</label>
+            <input type="text" class="form-control" id="qualification" placeholder="Quaification" name="qualification">
+            <span id="qualification_span_name" style="color: red;"></span>
+          </div>
+            <button type="submit" class="btn btn-success form-control">Add</button> 
+        </form>
+      </div>
+    </div>
+      <div class="panel panel-success col-md-4">
+      <div class="panel-heading">Add Other Section</div>
+      <div class="panel-body">
+        <form name="add_other_section_form" onsubmit="return validateAddOtherSectionForm()" action="" method="GET" id="add_other_section_form">
+          <div class="form-group">
+            <label>Section Name</label>
+            <input type="text" class="form-control" id="other_section_id" placeholder="Other Section" name="other_section_name">
+            <span id="other_section_span_name" style="color: red;"></span>
+          </div>
+            <button type="submit" class="btn btn-success form-control">Add</button> 
+        </form>
+      </div>
+    </div>
+    </div>
     </div>
   </div>
 </div>
@@ -210,8 +287,8 @@
   <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="staff_modal">
     <div class="modal-dialog modal-sm" role="document">
       <div class="modal-content">
-        <p>Staff Successfully Added.</p>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="resetAddStaffForm()">OK</button>
+        <p id="message"></p>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="modalBtn">OK</button>
       </div>
     </div>
   </div>

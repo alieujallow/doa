@@ -10,7 +10,7 @@ function validateName(form_name,object_name,span_name)
 
   if (name.value == "") 
   {
-   	span.innerHTML = "*username must be filled";
+   	span.innerHTML = "*required";
    	name.style.border= "1px solid red";
    	return false; 
   }
@@ -267,6 +267,256 @@ function validateAddStaffForm()
   return false;
 }
 
+//validates the unit Form
+function validateAddUnitForm()
+{
+  var unitValidation = validateName("add_unit_form","unit","unit_span_name");
+  if (unitValidation) 
+  {
+    addUnit();
+  }
+  return false;
+}
+
+//validates the region Form
+function validateAddRegionForm()
+{
+  var regionValidation = validateName("add_region_form","region","region_span_name");
+  if (regionValidation) 
+  {
+    addRegion();
+  }
+  return false;
+}
+
+//validates the qualification Form
+function validateAddQualificationForm()
+{
+  var qualificationValidation = validateName("add_qualification_form","qualification","qualification_span_name");
+  if (qualificationValidation) 
+  {
+    addQualification();
+  }
+  return false;
+}
+
+//validates the other section Form
+function validateAddOtherSectionForm()
+{
+  var otherSectionValidation = validateName("add_other_section_form","other_section_name","other_section_span_name");
+  if (otherSectionValidation) 
+  {
+    addOtherSection();
+  }
+  return false;
+}
+
+//validates the add user form
+function validateAddUserForm()
+{
+  var usernameValidation = validateName("add_user_form","username","username_span");
+  var roleValidation = validateSelectInputField("add_user_form","role","role_span");
+  if (usernameValidation & roleValidation) 
+  {
+    addUser();
+  }
+  return false;
+}
+
+//function that validates the login form
+function validateLoginForm()
+{
+  var usernameValidation = validateName("loginForm","username","usernameSpan");
+  var passwordValidation = validatePassword();
+
+  if (usernameValidation & passwordValidation)
+   {
+      //calls the funtion that logs in the user
+      loginUser();
+   }
+   return false;
+}
+
+//validates the photo
+function validatePhoto()
+{
+   //selects and previews the file
+   var img =  document.getElementById('profile_picture');
+   var filePicker=document.getElementById("picture_picker");
+   var profilePictureSpan=document.getElementById("profile_pic_span");
+
+   //getting file properties
+   if (filePicker.value=="") 
+   {
+    return false;
+   }
+   var fileExtension = filePicker.value.split('.').pop().toLowerCase();
+   var fileSize = filePicker.files[0].size;
+
+   //checks for the image extension
+   if (fileExtension =="jpeg" || fileExtension =="jpg" || fileExtension =="png" || fileExtension =="gif")
+    {
+      //checks for the file size
+      if (fileSize<=20000) 
+      {
+        var file= filePicker.files[0];
+        img.src = window.URL.createObjectURL(file);
+        profilePictureSpan.innerHTML="";
+        return true;
+      }
+      else
+      {
+         //file extension not supported
+         profilePictureSpan.innerHTML="File size too large";
+      }
+    }
+    else
+    {
+      //file extension not supported
+      profilePictureSpan.innerHTML="File format not supported";
+    }
+}
+//********************************************************************
+//                          MANAGE UNIT
+//********************************************************************
+//adds a unit to the system
+function addUnit()
+{
+  //collects the user information
+  var unit= document.forms["add_unit_form"]["unit"].value;
+
+  //sets the url
+    url= "controllers/unitController.php?unit="+unit+"&add_unit=yes";
+
+    //calls the ajax function
+    ajax(url, getAddResponse);
+}
+
+//gets unit
+function getUnit()
+{
+  //sets the url
+  url="controllers/dataController.php?unit=all";
+
+  //calls the ajax function
+  ajax(url, printData);
+}
+
+//prints data
+function printData(xhttp)
+{
+  var resultSet = JSON.parse(xhttp.responseText);
+  if (resultSet[0]=="qualification") 
+  {
+    var select = document.getElementById("qualification");
+  }
+  else if (resultSet[0]=="region")
+  {
+    var select = document.getElementById("region");
+  }
+  else if (resultSet[0]=="unit")
+  {
+    var select = document.getElementById("unit");
+  }
+  else if (resultSet[0]=="other_section")
+  {
+    var select = document.getElementById("other_section");
+  }
+  else if (resultSet[0]=="role")
+  {
+    var select = document.getElementById("role");
+  }
+
+  for (var i =1; i<resultSet.length; i++)
+  {
+    var row = resultSet[i];
+    var option = document.createElement("option");
+    option.innerHTML=row["name"];
+    option.value=row["id"];
+    select.appendChild(option);
+  }
+}
+//********************************************************************
+//                          MANAGE REGION
+//********************************************************************
+
+//gets unit
+function getRegion()
+{
+  //sets the url
+  url="controllers/dataController.php?region=all";
+
+  //calls the ajax function
+  ajax(url, printData);
+}
+
+//adds a unit to the system
+function addRegion()
+{
+  //collects the user information
+  var region= document.forms["add_region_form"]["region"].value;
+
+  //sets the url
+    url= "controllers/regionController.php?region="+region+"&add_region=yes";
+
+    //calls the ajax function
+    ajax(url, getAddResponse);
+}
+//********************************************************************
+//                          MANAGE QUALIFICATION
+//********************************************************************
+
+//get qualification
+function getQualification()
+{
+  //sets the url
+  url="controllers/dataController.php?qualification=all";
+
+  //calls the ajax function
+  ajax(url, printData);
+}
+
+//adds a qualification to the system
+function addQualification()
+{
+  //collects the user information
+  var qualification= document.forms["add_qualification_form"]["qualification"].value;
+
+  //sets the url
+    url= "controllers/qualificationController.php?qualification="+qualification+"&add_qualification=yes";
+
+    //calls the ajax function
+    ajax(url, getAddResponse);
+}
+//********************************************************************
+//                          MANAGE OTHER SECTION
+//********************************************************************
+
+//gets other section
+function getOtherSection()
+{
+  //sets the url
+  url="controllers/dataController.php?other_section=all";
+
+  //calls the ajax function
+  ajax(url, printData);
+}
+
+//adds a unit to the system
+function addOtherSection()
+{
+  //collects the user information
+  var otherSection= document.forms["add_other_section_form"]["other_section_name"].value;
+
+  //sets the url
+    url= "controllers/otherSectionController.php?other_section="+otherSection+"&add_other_section=yes";
+
+    //calls the ajax function
+    ajax(url, getAddResponse);
+}
+//********************************************************************
+//                          MANAGE STAFF
+//********************************************************************
 
 //adds a staff to the systme
 function addStaff()
@@ -296,57 +546,11 @@ function addStaff()
         +dateOfBirth+"&gender="+gender+"&designation="+designation+"&address="+address
         +"&email="+email+"&telephone="+telephone+"&date_of_appointment="+dateOfAppointment
         +"&payroll_number="+payrollNumber+"&grade="+grade+"&qualification="+qualification
-        +"&region="+region+"&unit="+unit+"&other_section="+otherSection+"profile_pic="+profilePic
+        +"&region="+region+"&unit="+unit+"&other_section="+otherSection+"&profile_pic="+profilePic
         +"&add_staff=yes";
 
     //calls the ajax function
     ajax(url, printAddStaffResponse);
-}
-
-//gets email and payroll
-function emailPayrollCheck()
-{
-  //collects the email and payroll
-  var email = document.forms["add_staff_form"]["email"].value;
-  var payrollNumber = document.forms["add_staff_form"]["payroll_number"].value;
-
-  //sets the url
-  url= "controllers/staffController.php?email="+email+"&payroll_number="+payrollNumber
-  +"&getEmailAndPayroll=yes";
-
-  //calls the ajax function
-  ajax(url, emailPayrollResponse);
-}
-
-//handles the email and payroll response
-function emailPayrollResponse(xhttp)
-{
-  var count =0;
-  var array = JSON.parse(xhttp.responseText);
-   if (array[0]=="email_exists")
-    {
-      var email = document.forms["add_staff_form"]["email"];
-      var span = document.getElementById("email_span");
-
-      span.innerHTML="*email exists."
-      email.style.border="1px solid red";
-    }
-    else{count++;}
-
-    if (array[1]=="payroll_number_exists")
-    {
-      var payrollNumber = document.forms["add_staff_form"]["payroll_number"];
-      var span = document.getElementById("payroll_number_span");
-
-      span.innerHTML="*payroll number exists."
-      payrollNumber.style.border="1px solid red";
-    }else{count++;}
-
-    if (count==2) 
-    {
-      //call the add staff funtion
-      addStaff();
-    }
 }
 
 //prints addstaff response
@@ -362,167 +566,10 @@ function printAddStaffResponse(xhttp)
       keyboard: false
     }) 
   }
-}
-
-//function that resets the add staff form
-function resetAddStaffForm()
-{
-  //resets the form
-  document.getElementById("add_staff_form").reset();
-}
-
-
-//logs in the user
-function loginUser()
-{
-  //collects the user credentials
-  var username = document.forms["loginForm"]["username"].value;
-  var password = document.forms["loginForm"]["password"].value;
-
-  //sets the url for the ajax call
-  url = "../unsecure/unsecureProcessing.php?username="+username+"&password="+password+"&login=yes";
-
-  //calls the ajax function
-  ajax(url, printLoginUserResponse);
-
-}
-
-//prints login response
-function printLoginUserResponse(xhttp)
-{
-  var response = xhttp.responseText;
-  if (response=="wrong username") 
+  else if(response=="pic")
   {
-    document.getElementById("usernameSpan").innerHTML = response;
-    document.getElementById("password").value ="";
+     document.getElementById("email_span").innerHTML="pic added";
   }
-  else if(response=="wrong password")
-  {
-    document.getElementById("passwordSpan").innerHTML = response;
-    document.getElementById("password").value ="";
-  }
-  else if (response=="connection_error" || response=="query_error")
-  {
-    document.getElementById("errorSpan").innerHTML = response;
-  }
-  else if (response=="success")
-  {
-    window.location.href = "../";
-  }
-}
-
-//function that validates the login form
-function validateLoginForm()
-{
-  var usernameValidation = validateName("loginForm","username","usernameSpan");
-  var passwordValidation = validatePassword();
-
-  if (usernameValidation & passwordValidation)
-   {
-      //calls the funtion that logs in the user
-      loginUser();
-   }
-   return false;
-}
-//***************************************************
-//                AJAX CALLS
-//***************************************************
-//ajax function
-function ajax(url, cFunction)
-{
-    var xhttp;
-    xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function()
-     {
-      if (this.readyState == 4 && this.status == 200) 
-      {
-        cFunction(this);
-      }
-    };
-    xhttp.open("GET", url, true);
-    xhttp.send();
-}
-
-//get qualification
-function getQualification()
-{
-  //sets the url
-  url="controllers/dataController.php?qualification=all";
-
-  //calls the ajax function
-  ajax(url, printData);
-}
-
-
-//gets unit
-function getUnit()
-{
-  //sets the url
-  url="controllers/dataController.php?unit=all";
-
-  //calls the ajax function
-  ajax(url, printData);
-}
-
-//gets unit
-function getRegion()
-{
-  //sets the url
-  url="controllers/dataController.php?region=all";
-
-  //calls the ajax function
-  ajax(url, printData);
-}
-
-//gets other section
-function getOtherSection()
-{
-  //sets the url
-  url="controllers/dataController.php?other_section=all";
-
-  //calls the ajax function
-  ajax(url, printData);
-}
-
-
-//prints data
-function printData(xhttp)
-{
-  var resultSet = JSON.parse(xhttp.responseText);
-  if (resultSet[0]=="qualification") 
-  {
-    var select = document.getElementById("qualification");
-  }
-  else if (resultSet[0]=="region")
-  {
-    var select = document.getElementById("region");
-  }
-  else if (resultSet[0]=="unit")
-  {
-    var select = document.getElementById("unit");
-  }
-  else if (resultSet[0]=="other_section")
-  {
-    var select = document.getElementById("other_section");
-  }
-
-  for (var i =1; i<resultSet.length; i++)
-  {
-    var row = resultSet[i];
-    var option = document.createElement("option");
-    option.innerHTML=row["name"];
-    option.value=row["id"];
-    select.appendChild(option);
-  }
-}
-
-//loads the unit, qualification, region and other section
-function loadData()
-{
-  getQualification();
-  getUnit();
-  getRegion();
-  getOtherSection();
 }
 
 //get staff info
@@ -683,45 +730,239 @@ function printStaffInfo(xhttp)
   }
 }
 
-//uploads the photo
-function validatePhoto()
+//gets email and payroll
+function emailPayrollCheck()
 {
-   //selects and previews the file
-   var img =  document.getElementById('profile_picture');
-   var filePicker=document.getElementById("picture_picker");
-   var profilePictureSpan=document.getElementById("profile_pic_span");
+  //collects the email and payroll
+  var email = document.forms["add_staff_form"]["email"].value;
+  var payrollNumber = document.forms["add_staff_form"]["payroll_number"].value;
 
-   //getting file properties
-   if (filePicker.value=="") 
-   {
-    return false;
-   }
-   var fileExtension = filePicker.value.split('.').pop().toLowerCase();
-   var fileSize = filePicker.files[0].size;
+  //sets the url
+  url= "controllers/staffController.php?email="+email+"&payroll_number="+payrollNumber
+  +"&getEmailAndPayroll=yes";
 
-   //checks for the image extension
-   if (fileExtension =="jpeg" || fileExtension =="jpg" || fileExtension =="png" || fileExtension =="gif")
+  //calls the ajax function
+  ajax(url, emailPayrollResponse);
+}
+
+//handles the email and payroll response
+function emailPayrollResponse(xhttp)
+{
+  var count =0;
+  var array = JSON.parse(xhttp.responseText);
+   if (array[0]=="email_exists")
     {
-      //checks for the file size
-      if (fileSize<=20000) 
-      {
-        var file= filePicker.files[0];
-        img.src = window.URL.createObjectURL(file);
-        profilePictureSpan.innerHTML="";
-        return true;
-      }
-      else
-      {
-         //file extension not supported
-         profilePictureSpan.innerHTML="File size too large";
-      }
+      var email = document.forms["add_staff_form"]["email"];
+      var span = document.getElementById("email_span");
+
+      span.innerHTML="*email exists."
+      email.style.border="1px solid red";
     }
-    else
+    else{count++;}
+
+    if (array[1]=="payroll_number_exists")
     {
-      //file extension not supported
-      profilePictureSpan.innerHTML="File format not supported";
+      var payrollNumber = document.forms["add_staff_form"]["payroll_number"];
+      var span = document.getElementById("payroll_number_span");
+
+      span.innerHTML="*payroll number exists."
+      payrollNumber.style.border="1px solid red";
+    }else{count++;}
+
+    if (count==2) 
+    {
+      //call the add staff funtion
+      addStaff();
     }
 }
+
+
+
+//handles response from the server after add a user,unit,region,section and qualification
+function getAddResponse(xhttp)
+{
+  var response = xhttp.responseText;
+
+  if (response=="unit_added") 
+  {
+    document.getElementById("message").innerHTML="Unit Added Successfully";
+    triggerModal();
+    document.getElementById("modalBtn").onclick=resetUnitForm;
+  }
+  else if(response=="region_added")
+  {
+     document.getElementById("message").innerHTML="Region Added Successfully";
+     triggerModal();
+     document.getElementById("modalBtn").onclick=resetRegionForm;
+  }
+  else if(response=="qualification_added")
+  {
+     document.getElementById("message").innerHTML="Qualification Added Successfully";
+     triggerModal();
+     document.getElementById("modalBtn").onclick=resetQualificationForm;
+  }
+  else if(response=="user_added")
+  {
+     document.getElementById("message").innerHTML="User Added Successfully";
+     triggerModal();
+     document.getElementById("modalBtn").onclick=resetUserForm;
+  }
+  else if(response=="other_section_added")
+  {
+     document.getElementById("message").innerHTML="Other section Added Successfully";
+     triggerModal();
+     document.getElementById("modalBtn").onclick=resetOtherSectionForm;
+  }
+  else if(response=="failure")
+  {
+     document.getElementById("unit_span_name").innerHTML="unit Not added";
+  }
+}
+
+//*****************************************************
+//                MANAGING RESETTING THE FORMS
+//*****************************************************
+//function that resets the add staff form
+function resetUnitForm()
+{
+  //resets the form
+  document.getElementById("add_unit_form").reset();
+}
+
+//function that resets the add staff form
+function resetRegionForm()
+{
+  //resets the form
+  document.getElementById("add_region_form").reset();
+}
+//function that resets the add staff form
+function resetQualificationForm()
+{
+  //resets the form
+  document.getElementById("add_qualification_form").reset();
+}
+//function that resets the add staff form
+function resetUserForm()
+{
+  //resets the form
+  document.getElementById("add_user_form").reset();
+}
+//function that resets the add staff form
+function resetOtherSectionForm()
+{
+  //resets the form
+  document.getElementById("add_other_section_form").reset();
+}
+//function that resets the add staff form
+function resetStaffForm()
+{
+  //resets the form
+  document.getElementById("add_staff_form").reset();
+}
+//*************************************************************
+//                    MANAGING USER
+//*************************************************************
+//logs in the user
+function loginUser()
+{
+  //collects the user credentials
+  var username = document.forms["loginForm"]["username"].value;
+  var password = document.forms["loginForm"]["password"].value;
+
+  //sets the url for the ajax call
+  url = "../unsecure/unsecureProcessing.php?username="+username+"&password="+password+"&login=yes";
+
+  //calls the ajax function
+  ajax(url, printLoginUserResponse);
+
+}
+
+//adds a user to the system
+function addUser()
+{
+  //collects the user information
+  var username= document.forms["add_user_form"]["username"].value;
+  var role = document.forms["add_user_form"]["role"].value;
+
+  //sets the url
+    url= "controllers/userController.php?username="+username+"&roleId="+role+"&add_user=yes";
+
+    //calls the ajax function
+    ajax(url, getAddResponse);
+}
+
+//prints login response
+function printLoginUserResponse(xhttp)
+{
+  var response = xhttp.responseText;
+  if (response=="wrong username") 
+  {
+    document.getElementById("usernameSpan").innerHTML = response;
+    document.getElementById("password").value ="";
+  }
+  else if(response=="wrong password")
+  {
+    document.getElementById("passwordSpan").innerHTML = response;
+    document.getElementById("password").value ="";
+  }
+  else if (response=="connection_error" || response=="query_error")
+  {
+    document.getElementById("errorSpan").innerHTML = response;
+  }
+  else if (response=="success")
+  {
+    window.location.href = "../";
+  }
+}
+
+//gets user role
+function getRole()
+{
+  //sets the url
+  url="controllers/dataController.php?role=all";
+
+  //calls the ajax function
+  ajax(url, printData);
+}
+//***************************************************
+//                AJAX CALLS
+//***************************************************
+//ajax function
+function ajax(url, cFunction)
+{
+    var xhttp;
+    xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function()
+     {
+      if (this.readyState == 4 && this.status == 200) 
+      {
+        cFunction(this);
+      }
+    };
+    xhttp.open("GET", url, true);
+    xhttp.send();
+}
+
+//function that triggers the modal
+function triggerModal()
+{
+  //triggers the moadal
+    $('#staff_modal').modal({
+      backdrop: 'static', 
+      keyboard: false
+    }) 
+}
+
+//loads the unit, qualification, region and other section
+function loadData()
+{
+  getQualification();
+  getUnit();
+  getRegion();
+  getOtherSection();
+  getRole();
+}
+
 
 //returns profile picture
 function getStaffProfilePic()
@@ -731,8 +972,17 @@ function getStaffProfilePic()
     if(validatePhoto())
     {
       var filePicker=document.getElementById("picture_picker");
-      var file= filePicker.files[0];
-      return file;
+      file= filePicker.files[0];
+
+      // you just add this
+      var formData = new FormData();
+      return formData.append('image', file); 
     }
-     return file;
+    return file;
+}
+
+//sd;fkg';ldgk;dskg;dkg
+function trypic()
+{
+
 }

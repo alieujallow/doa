@@ -22,16 +22,32 @@ if (isset($_GET['add_staff']) & !empty($_GET['add_staff']))
     $region = $_GET["region"];
     $unit = $_GET["unit"];
     $otherSection =$_GET["other_section"];
+    $profilePic =$_GET["profile_pic"];
 
     //sets the query
     $sql = "INSERT INTO odg_staff(region_id,unit_id,other_section_id,qualification_id,first_name,middle_name,last_name,date_of_birth,gender,address,email,tel,date_of_appointment,payroll_number,grade,status,designation) VALUES('$region','$unit','$otherSection','$qualification',
-    '$firstName','$middleName','$lastName','$dateOfBirth','$gender','$address','$email',
-    '$telephone',' $dateOfAppointment','$payrollNumber','$grade','ACTIVE','$designation')";
+        '$firstName','$middleName','$lastName','$dateOfBirth','$gender','$address','$email',
+        '$telephone',' $dateOfAppointment','$payrollNumber','$grade','ACTIVE','$designation')";
 
     //creates a staff class
     $staff = new Staff;
-    $result = $staff->staffQuery($sql);
-    echo "staff_added";
+
+    if ($profilePic=="file_not_selected")
+    {
+        $result = $staff->staffQuery($sql);
+        echo "staff_added";
+    }
+    else
+    {
+        $fileType=$_FILES["image"]["type"];
+
+
+        /*$staff->staffQuery($sql);
+        $lastInsertedId = $staff->getLastStaffInsertedId();
+        $sql="INSERT INTO picture(staff_id) VALUES('$lastInsertedId')";
+        $result = $staff->staffQuery($sql);*/
+        echo "pic";
+    } 
 }
 elseif (isset($_GET['getEmailAndPayroll']) & !empty($_GET['getEmailAndPayroll']))
 {
@@ -77,15 +93,5 @@ elseif (isset($_GET['staff_info']) & !empty($_GET['staff_info']))
 
     echo json_encode($rows);
 }
-
-/*//sets the sql
-	$sql="SELECT id,first_name,middle_name,last_name,gender,designation FROM odg_staff WHERE status='ACTIVE'";
-
-	//creates a staff class
-    $staff = new Staff;
-
-    //gets the rows of all the staff
-    $rows = $staff->getStaffInfo($sql);
-    var_dump($rows);*/
 
 ?>

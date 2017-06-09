@@ -42,5 +42,11 @@ class Staff extends Dbconnection
 			}
 		}
 	}
+
+	//gets the last inserted id of a staff
+	function getLastStaffInsertedId()
+	{
+		return $this->getLastInsertedId();
+	}
 }
 ?>

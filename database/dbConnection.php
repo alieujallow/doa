@@ -50,13 +50,15 @@ class Dbconnection
 			}
 
 			//closes the connection
-			mysqli_close($this->connection);
+			//mysqli_close($this->connection);
 
 			//returns the result
 			return $this->result;
 		}
 		return "connection_error";
 	}
+
+
 
 	/*
 	*gets a row
@@ -76,6 +78,12 @@ class Dbconnection
 	{
 	  //returns the number of rows
 	  return mysqli_num_rows($this->result);
+	}
+
+	//gets the last inserted id
+	function getLastInsertedId()
+	{
+		return mysqli_insert_id($this ->connection);
 	}
 }
 
