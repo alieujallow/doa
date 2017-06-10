@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Bootstrap 101 Template</title>
+    <title>Department of Agriculture</title>
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -18,7 +18,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body onload="loadData(),getStaffInfo()">
+  <body onload="getStaffInfo()">
     <div class="container-fluid">
       <div class="row">
         <nav class="navbar navbar-default">
@@ -31,7 +31,10 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Brand</a>
+          <div style="float: left;">
+            <img src="img/mainLogo.PNG" alt="" class="img-circle" width="60" height="60" id="profile_picture">
+          </div>
+          <a class="navbar-brand" href="#" style="margin-top:5%;"> Department of Agriculture</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -58,18 +61,42 @@
 <div class="container">
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation"><a href="#staff_list" aria-controls="home" role="tab" data-toggle="tab" onclick="getStaffInfo()">Staff List</a></li>
+    <li role="presentation" class="active"><a href="#staff_list" aria-controls="home" role="tab" data-toggle="tab" onclick="getStaffInfo()">Staff List</a></li>
 
-    <li role="presentation" class="active"><a href="#add_staff" aria-controls="profile" role="tab" data-toggle="tab">Add Staff</a></li>
+    <li role="presentation"><a href="#add_staff" aria-controls="profile" role="tab" data-toggle="tab" onclick="loadData()">Add Staff</a></li>
 
-    <li role="presentation"><a href="#add_user" aria-controls="messages" role="tab" data-toggle="tab">Add User</a></li>
+    <li role="presentation"><a href="#add_user" aria-controls="messages" role="tab" data-toggle="tab" onclick="getRole()">Database Setup</a></li>
   </ul>
 
   <!-- Tab panes -->
   <div class="tab-content">
-    <div role="tabpanel" class="tab-pane" id="staff_list">
+    <div role="tabpanel" class="tab-pane active" id="staff_list">
+    <div></div><br>
+    <div class="row">
+      <form id="searchForm">
+        <div class="col-md-2">
+          <input type="text" class="form-control" id="unit" placeholder="payroll Number" name="unit">
+        </div>
+        <div class="col-md-2">
+          <input type="text" class="form-control" id="unit" placeholder="First Name" name="unit">
+        </div>
+        <div class="col-md-2">
+          <input type="text" class="form-control" id="unit" placeholder="Middle Name" name="unit">
+        </div>
+        <div class="col-md-2">
+          <input type="text" class="form-control" id="unit" placeholder="Last Name" name="unit">
+        </div>
+        <div class="col-md-2">
+          <input type="text" class="form-control" id="unit" placeholder="Designation" name="unit">
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+      </form>
+      
     </div>
-    <div role="tabpanel" class="tab-pane active" id="add_staff" class="active">
+    </div>
+    <div role="tabpanel" class="tab-pane" id="add_staff" class="active">
       <div></div><br>
       <form name="add_staff_form" onsubmit="return validateAddStaffForm()" action="" method="GET" id="add_staff_form">
         <div class="row">
@@ -159,7 +186,6 @@
                   <label>Region</label><br>
                   <select id="region" class="form-control">
                     <option value="">Select..</option>
-                    <option>WCR</option>
                   </select>
                   <span id="region_span" style="color: red;"></span>
                 </div>
@@ -167,7 +193,6 @@
                   <label>Unit</label><br>
                   <select id="unit" class="form-control">
                     <option value="">Select...</option>
-                    <option>Extension</option>
                   </select>
                   <span id="unit_span" style="color: red;"></span>
                 </div>
@@ -177,7 +202,6 @@
                   <label>Other Section</label><br>
                   <select id="other_section" class="form-control">
                     <option value="">Select..</option>
-                    <option>accounts</option>
                   </select>
                   <span id="other_section_span" style="color: red;"></span>
                 </div>

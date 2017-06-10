@@ -960,7 +960,6 @@ function loadData()
   getUnit();
   getRegion();
   getOtherSection();
-  getRole();
 }
 
 
