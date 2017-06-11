@@ -94,4 +94,53 @@ elseif (isset($_GET['staff_info']) & !empty($_GET['staff_info']))
     echo json_encode($rows);
 }
 
+elseif (isset($_GET['search']) & !empty($_GET['search']))
+{
+    //gets the values
+     $firstName=$_GET['first_name'];
+     $lastName=$_GET['last_name'];
+     $payroll=$_GET['payroll_number'];
+
+     if ($firstName=="" & $lastName=="" & $payroll!="")
+     {
+        //sets the sql
+        $sql="SELECT first_name,middle_name,last_name,gender,designation FROM odg_staff WHERE status='ACTIVE' AND payroll_number LIKE '%$payroll%'";
+     }
+     else if ($firstName=="" & $lastName!="" & $payroll=="") 
+     {
+         //sets the sql
+        $sql="SELECT first_name,middle_name,last_name,gender,designation FROM odg_staff WHERE status='ACTIVE' AND last_name LIKE '%$lastName%'";
+     }
+     else if ($firstName!="" & $lastName=="" & $payroll=="") 
+     {
+         //sets the sql
+        $sql="SELECT first_name,middle_name,last_name,gender,designation FROM odg_staff WHERE status='ACTIVE' AND first_name LIKE '%$firstName%'";
+     }
+     else if ($firstName!="" & $lastName!="" & $payroll=="") 
+     {
+         //sets the sql
+        $sql="SELECT first_name,middle_name,last_name,gender,designation FROM odg_staff WHERE status='ACTIVE' AND first_name LIKE '%$firstName%' AND last_name LIKE '%$lastName%'";
+     }
+     else if ($firstName!="" & $lastName =="" & $payroll!="") 
+     {
+         //sets the sql
+        $sql="SELECT first_name,middle_name,last_name,gender,designation FROM odg_staff WHERE status='ACTIVE' AND first_name LIKE '%$firstName%' AND payroll_number LIKE '%$payroll%'";
+     }
+     else if ($firstName=="" & $lastName !="" & $payroll!="") 
+     {
+         //sets the sql
+        $sql="SELECT first_name,middle_name,last_name,gender,designation FROM odg_staff WHERE status='ACTIVE' AND last_name LIKE '%$lastName%' AND payroll_number LIKE '%$payroll%'";
+     }
+     else if ($firstName!="" & $lastName !="" & $payroll!="") 
+     {
+         //sets the sql
+        $sql="SELECT first_name,middle_name,last_name,gender,designation FROM odg_staff WHERE status='ACTIVE' AND last_name LIKE '%$lastName%' AND payroll_number LIKE '%$payroll%' AND first_name LIKE '%$firstName%'";
+     }
+    //creates a staff class
+    $staff = new Staff;
+
+    //gets the rows of all the staff
+    $rows = $staff->getStaffInfo($sql);
+    echo json_encode($rows);
+}
 ?>

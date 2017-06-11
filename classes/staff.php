@@ -28,18 +28,20 @@ class Staff extends Dbconnection
 		if($this->query($sql))
 		{
 			//gets the number of rows
-			if($this->getNumRows()>0)
-			{
-				//creates an array
-				$rows=array();
+			$numRows=$this->getNumRows();
 
+			//creates an array
+			$rows=array($numRows);
+
+			if($numRows>0)
+			{
 				//fetch all the rows
 				while ($row=$this->getRow()) 
 				{
 					$rows[]=$row;
 				}
-				return $rows;
 			}
+			return $rows;
 		}
 	}
 

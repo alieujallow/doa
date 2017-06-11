@@ -73,28 +73,32 @@
     <div role="tabpanel" class="tab-pane active" id="staff_list">
     <div></div><br>
     <div class="row">
-      <form id="searchForm">
-        <div class="col-md-2">
-          <input type="text" class="form-control" id="unit" placeholder="payroll Number" name="unit">
+    <div class="col-md-12">
+    <div id="searchForm" >
+
+      <form name="searchForm" action="" method="GET" onsubmit="return validateSearchForm()">
+        <div class="col-md-3">
+          <input type="text" class="form-control" id="payroll_number" placeholder="payroll Number" name="payroll_number">
+          <span id="payroll_number_span" name="payroll_number_span" style="color: red;"></span>
         </div>
-        <div class="col-md-2">
-          <input type="text" class="form-control" id="unit" placeholder="First Name" name="unit">
+        <div class="col-md-3">
+          <input type="text" class="form-control" id="first_name" placeholder="First Name" name="first_name">
+          <span id="first_name_span" name="first_name_span" style="color: red;"></span>
         </div>
-        <div class="col-md-2">
-          <input type="text" class="form-control" id="unit" placeholder="Middle Name" name="unit">
+        <div class="col-md-3">
+          <input type="text" class="form-control" id="last_name" placeholder="Last Name" name="last_name">
+          <span id="last_name_span" name="last_name_span" style="color: red;"></span>
         </div>
-        <div class="col-md-2">
-          <input type="text" class="form-control" id="unit" placeholder="Last Name" name="unit">
-        </div>
-        <div class="col-md-2">
-          <input type="text" class="form-control" id="unit" placeholder="Designation" name="unit">
-        </div>
-        <div class="col-md-2">
-          <button type="submit" class="btn btn-primary">Search</button>
+        <div class="col-md-3">
+          <button type="submit" class="btn btn-primary form-control">Search</button>
         </div>
       </form>
-      
-    </div>
+      </div>
+      </div>
+        <div id="error_span" style="color: red; text-align: center;"></div>
+    </div><br>
+    <span id="searchResult"></span>
+    <div id="staffInfo"></div>
     </div>
     <div role="tabpanel" class="tab-pane" id="add_staff" class="active">
       <div></div><br>
@@ -165,8 +169,8 @@
                 </div>
                 <div class="form-group col-md-4">
                   <label>Paroll Number</label><br>
-                  <input type="text" class="form-control" id="payroll_number" placeholder="Payroll Number">
-                  <span id="payroll_number_span" style="color: red;"></span>
+                  <input type="text" class="form-control" id="payroll_number" placeholder="Payroll Number" name="payroll_number">
+                  <span id="payroll_number_span" name="payroll_number_span" style="color: red;"></span>
                 </div>
                 <div class="form-group col-md-4">
                   <label>Grade</label><br>

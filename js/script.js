@@ -34,6 +34,12 @@ function validateName(form_name,object_name,span_name)
   }
 }
 
+//checks if a value is an interger
+function isInt(value)
+{
+  return !isNaN(value) && (function(x){return(x|0)===x;})(parseFloat(value))
+}
+
 //validates the select input fields
 function validateSelectInputField(form_name,object_name,span_name)
 {
@@ -133,13 +139,14 @@ function validateGrade()
 }
 
 //validates the Payroll Number
-function validatePayrollNumber()
+function validatePayrollNumber(formName,fieldName,spanName)
 {
-  var payrollNumber = document.forms["add_staff_form"]["payroll_number"];
-  var span = document.getElementById("payroll_number_span");
+  var payrollNumber = document.forms[formName][fieldName];
+  var span = document.getElementById(spanName);
+
   if (payrollNumber.value=="") 
   {
-    span.innerHTML = "*Payroll Number must be filled";
+    span.innerHTML = "*required";
     payrollNumber.style.border= "1px solid red";
     return false; 
   }
@@ -150,14 +157,16 @@ function validatePayrollNumber()
     return true; 
   }
 }
+
 //validates the designation
-function validateDesignation()
+function validateDesignation(formName,fieldName,spanName)
 {
-  var designation = document.forms["add_staff_form"]["designation"];
-  var span = document.getElementById("designation_span");
+  var designation = document.forms[formName][fieldName];
+  var span = document.getElementById(spanName);
+
   if (designation.value=="") 
   {
-    span.innerHTML = "*designation must be filled";
+    span.innerHTML = "*required";
     designation.style.border= "1px solid red";
     return false; 
   }
@@ -244,14 +253,14 @@ function validateAddStaffForm()
   var addressValidation = validateAddress();
   var emailValidation = validateEmail();
   var telephoneValidation = validateTelephone();
-  var designationValidation = validateDesignation();
+  var designationValidation = validateDesignation("add_staff_form","designation","designation_span");
   var qualificationValidation = validateSelectInputField("add_staff_form","qualification","qualification_span");
   var genderValidation = validateSelectInputField("add_staff_form","gender","gender_span");
   var unitValidation = validateSelectInputField("add_staff_form","unit","unit_span");
   var regionValidation = validateSelectInputField("add_staff_form","region","region_span");
   var otherSectionValidation = validateSelectInputField("add_staff_form","other_section","other_section_span");
   var gradeValidation = validateGrade();
-  var payrollNumberValidation = validatePayrollNumber();
+  var payrollNumberValidation = validatePayrollNumber("add_staff_form","payroll_number","payroll_number_span");
   var appointmentDateValidation = validateDate("add_staff_form","date_of_appointment","date_of_appointment_span");
   var dateOfBirthValidation = validateDate("add_staff_form","date_of_birth","date_of_birth_span");
 
@@ -376,6 +385,194 @@ function validatePhoto()
       profilePictureSpan.innerHTML="File format not supported";
     }
 }
+
+//validates the search form
+function validateSearchForm()
+{
+  //getting the field objects
+  var firstName = document.forms["searchForm"]["first_name"];
+  var lastName = document.forms["searchForm"]["last_name"];
+  var payrollNumber = document.forms["searchForm"]["payroll_number"];
+
+  //getting the spans
+  var errorSpan = document.getElementById("error_span");
+  var firstNameSpan = document.getElementById("first_name_span");
+  var lastNameSpan = document.getElementById("last_name_span");
+  var payrollNumberSpan = document.getElementById("payroll_number_span");
+ 
+  //checks if all of the fields are empty
+  if (firstName.value=="" & lastName.value=="" & payrollNumber.value=="")
+  {
+    errorSpan.innerHTML="*atleast one field is required";
+    return false;
+  }
+  //checks if the first name is not empty and the rest are empty
+  else if(firstName.value!="" & lastName.value=="" & payrollNumber.value=="")
+  {
+    errorSpan.innerHTML="";
+    //validates the first name
+    var firstNameValidation = ValidateSearchFormName(firstName,firstNameSpan);
+    if (firstNameValidation)
+     {
+      searchStaff();
+     }
+     return false;
+  }
+  //checks if the last name is not empty and the rest are empty
+  else if(firstName.value=="" & lastName.value!=""
+   & payrollNumber.value=="")
+  {
+    errorSpan.innerHTML="";
+    //validates the last name
+    var lastNameValidation = ValidateSearchFormName(lastName,lastNameSpan);
+    if (lastNameValidation)
+     {
+      searchStaff();
+     }
+     return false;
+  }
+  //checks if the payroll is not empty and the rest are empty
+  else if(firstName.value=="" & lastName.value=="" & payrollNumber.value!="")
+  {
+    errorSpan.innerHTML="";
+    //validates the payroll
+    var payrollValidation = validatePayroll(payrollNumber,payrollNumberSpan);
+    if (payrollValidation)
+     {
+      searchStaff();
+     }
+     return false;
+  }
+  //checks if the payroll and first name is not empty
+  else if(firstName.value!="" & lastName.value=="" & payrollNumber.value!="")
+  {
+    errorSpan.innerHTML="";
+    var payrollValidation = validatePayroll(payrollNumber,payrollNumberSpan);
+    var firstNameValidation = ValidateSearchFormName(firstName,firstNameSpan);
+
+    if (payrollValidation & firstNameValidation)
+     {
+      searchStaff();
+     }
+     return false;
+  }
+  //checks if the payroll and last name is not empty
+  else if(firstName.value=="" & lastName.value!="" & payrollNumber.value!="")
+  {
+    errorSpan.innerHTML="";
+    var payrollValidation = validatePayroll(payrollNumber,payrollNumberSpan);
+    var lastNameValidation = ValidateSearchFormName(lastName,lastNameSpan);
+    
+    if (payrollValidation & lastNameValidation)
+     {
+      searchStaff();
+     }
+     return false;
+  }
+  //checks if the first name and last name is not empty
+  else if(firstName.value!="" & lastName.value!="" & payrollNumber.value=="")
+  {
+    errorSpan.innerHTML="";
+    var firstNameValidation = ValidateSearchFormName(firstName,firstNameSpan);
+    var lastNameValidation = ValidateSearchFormName(lastName,lastNameSpan);
+    if (firstNameValidation & lastNameValidation)
+     {
+      searchStaff();
+     }
+     return false;
+  }
+  //checks if the first name and last name and payroll is not empty
+  else if(firstName.value!="" & lastName.value!="" & payrollNumber.value!="")
+  {
+    errorSpan.innerHTML="";
+    var firstNameValidation = ValidateSearchFormName(firstName,firstNameSpan);
+    var lastNameValidation = ValidateSearchFormName(lastName,lastNameSpan);
+    var payrollValidation = validatePayroll(payrollNumber,payrollNumberSpan);
+    if (firstNameValidation & lastNameValidation & payrollValidation)
+     {
+      searchStaff();
+     }
+     return false;
+  }
+}
+
+ //VALIDATES SEARCH FORM NAMES
+  function ValidateSearchFormName(fieldObject,spanObject)
+  {
+    //VALIDATES THE FIRST NAME
+    if (fieldObject.value!="") 
+    {
+       //checks if the username does not contain numbers or symbols 
+       var pattern = new RegExp("^[a-zA-Z]+$");
+
+       if (pattern.test(fieldObject.value)) 
+       {
+          fieldObject.style.border= "";
+          spanObject.innerHTML = "";
+          return true; 
+       }
+      else
+      {
+        spanObject.innerHTML = "*must not contain numbers or symbols";
+        fieldObject.style.border = "1px solid red";
+        return false; 
+      }
+    }
+    return false;
+  }
+
+//validates the payroll
+function validatePayroll(fieldObject,spanObject)
+{
+    if (fieldObject.value!="")
+    {
+
+      //checks if the payroll is a number
+      if (isInt(fieldObject.value)) 
+      {
+        //checks for the length
+        var payrollLength= fieldObject.value.length;
+        if (payrollLength<6) 
+        {
+          return true;
+        }
+        else
+        {
+          fieldObject.style.border="1px solid red";
+          spanObject.innerHTML="*6 digits required";
+          return false;
+        }
+      }
+      else
+      {
+        fieldObject.style.border="1px solid red";
+        spanObject.innerHTML="*number required";
+        return false;
+      }
+    }
+    return false;
+}
+//********************************************************************
+//                          MANAGE SEARCH
+//********************************************************************
+
+//searches for a staff
+function searchStaff()
+{
+  //gets the values
+  var firstName = document.forms["searchForm"]["first_name"].value;
+  var lastName = document.forms["searchForm"]["last_name"].value;
+  var payrollNumber = document.forms["searchForm"]["payroll_number"].value;
+
+  //sets the url
+  url="controllers/staffController.php?first_name="+firstName+"&last_name="+lastName
+  +"&payroll_number="+payrollNumber+"&search=yes";
+
+  //calls the ajax function
+    ajax(url, printStaffInfo);
+}
+
+
 //********************************************************************
 //                          MANAGE UNIT
 //********************************************************************
@@ -586,8 +783,14 @@ function getStaffInfo()
 function printStaffInfo(xhttp)
 {
   var rows = JSON.parse(xhttp.responseText);
-  var staffList = document.getElementById("staff_list");
-  for (var i =0; i<rows.length; i++)
+  var staffList = document.getElementById("staffInfo");
+  //clears the staff list before printing
+  staffList.innerHTML="";
+
+  //prints the number of rows
+  document.getElementById("searchResult").innerHTML="Record(s): "+rows[0];
+
+  for (var i =1; i<rows.length; i++)
   {
     var record = rows[i];
     //creates a staff card
