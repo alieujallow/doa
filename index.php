@@ -18,7 +18,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body onload="getStaffInfo()">
+  <body onload="getStaffInfo(), checkUserLogin()">
     <div class="container-fluid">
       <div class="row">
         <nav class="navbar navbar-default">

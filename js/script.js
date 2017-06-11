@@ -553,7 +553,7 @@ function validatePayroll(fieldObject,spanObject)
     return false;
 }
 //********************************************************************
-//                          MANAGE SEARCH
+//                       MANAGE SEARCH AND LOGIN SESSION
 //********************************************************************
 
 //searches for a staff
@@ -572,7 +572,26 @@ function searchStaff()
     ajax(url, printStaffInfo);
 }
 
+//check for user login
+function checkUserLogin()
+{
+  //sets the url
+  url="settings/initialization.php?userLogin=yes";
 
+  //calls the ajax function
+  ajax(url, getUserLoginStatus);
+}
+
+//gets userLOGIN status
+function getUserLoginStatus(xhttp)
+{
+  var response = xhttp.responseText;
+  if (response =="user_not_loggedin")
+  {
+    //redirect user to login
+    window.location.href = "login";
+  }
+}
 //********************************************************************
 //                          MANAGE UNIT
 //********************************************************************
