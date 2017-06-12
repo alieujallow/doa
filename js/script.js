@@ -1099,6 +1099,27 @@ function loginUser()
 
 }
 
+//logs out the user
+function logoutUser()
+{
+  //sets the url
+  url= "login/logout.php?logout=yes";
+
+  //calls the ajax function
+  ajax(url, getLogoutUserResponse);
+}
+
+//gets response of user logout
+function getLogoutUserResponse(xhttp)
+{
+  var response = xhttp.responseText;
+  if (response=="logged_out")
+   {
+    window.location.href="login";
+   }
+}
+
+
 //adds a user to the system
 function addUser()
 {
@@ -1200,10 +1221,4 @@ function getStaffProfilePic()
       return formData.append('image', file); 
     }
     return file;
-}
-
-//sd;fkg';ldgk;dskg;dkg
-function trypic()
-{
-
 }

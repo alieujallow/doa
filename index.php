@@ -44,11 +44,7 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="#">Change Username</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Change Password</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">logout</a></li>
+                <li><a href="#" onclick="logoutUser();">logout</a></li>
               </ul>
             </li>
           </ul>
