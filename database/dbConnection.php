@@ -86,11 +86,4 @@ class Dbconnection
 		return mysqli_insert_id($this ->connection);
 	}
 }
-
-/*$sql = "INSERT INTO odg_staff(region_id,unit_id,other_section_id,qualification_id,first_name,middle_name,last_name,date_of_birth,gender,address,email,tel,date_of_appointment,payroll_number,grade,status,designation) VALUES(1,1,1,1,'mamadou','Alieu','Jallow','2017-3-6','M','londoncorner','alieujallow93@gmail.com','254875244','2016-3-6','129308','2','ACTIVE','STORE CLARK')";
-
-$db = new Dbconnection;
-$result = $db->query($sql);*/
-
- //echo password_hash("123", PASSWORD_DEFAULT);
 ?>

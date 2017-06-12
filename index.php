@@ -18,7 +18,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body onload="getStaffInfo(), checkUserLogin()">
+  <body onload="getStaffInfo(), checkUserLogin(), getUserName()">
     <div class="container-fluid">
       <div class="row">
         <nav class="navbar navbar-default">
@@ -42,7 +42,7 @@
           
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="navUsername"></span><span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="#" onclick="logoutUser();">logout</a></li>
               </ul>

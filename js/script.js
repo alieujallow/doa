@@ -1099,6 +1099,23 @@ function loginUser()
 
 }
 
+//get user name
+function getUserName()
+{
+  //sets the url
+  url= "controllers/userController.php?getUserName=yes";
+
+  //calls the ajax function
+  ajax(url, printUserName);
+}
+
+//prints username
+function printUserName(xhttp)
+{
+  var response = xhttp.responseText;
+  document.getElementById("navUsername").innerHTML=response;
+}
+
 //logs out the user
 function logoutUser()
 {

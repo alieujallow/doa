@@ -31,12 +31,10 @@ if (isset($_GET['add_user']) & !empty($_GET['add_user']))
         echo "failure";
     }
 }
-
-//sets the sql
-    /*$sql="INSERT INTO user(role_id,username,password) VALUES(1,'dsg','dg')";
-
-    //creates a new user
-    $user= new User;
-    $user->addUser($sql);*/
+elseif (isset($_GET['getUserName']) & !empty($_GET['getUserName']))
+{
+    session_start();
+    echo $_SESSION['username'];
+}
 
 ?>
