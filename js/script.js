@@ -195,52 +195,50 @@ function validateTelephone()
     return true; 
   }
 }
+
  //validates the password
-function validatePassword()
+function validatePassword(fieldObject,spanObject)
 {
-	var password = document.forms["loginForm"]["password"];
-	var span = document.getElementById('passwordSpan');
-   if (password.value == "") 
+   if (fieldObject.value == "") 
    {
-  	span.innerHTML = "*password must be filled";
-  	password.style.border = "1px solid red";
+  	spanObject.innerHTML = "*required";
+  	fieldObject.style.border = "1px solid red";
   	return false; 
    }
    else
   {
 
-  	//if password is not empty do the following
+  	/*//if password is not empty do the following
   	//checks the length of the password
-  	/*if (password.value.length>=6 & password.value.length<13)
+  	if (fieldObject.value.length>=6 & fieldObject.value.length<13)
   	{
 
   		//if the password meets the length, check for an Uppercase letter, symbol, nummber, 
   		var pattern = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$");
-  		if(pattern.test(password.value))
+  		if(pattern.test(fieldObject.value))
   		{
-  			span.innerHTML = "";
-  			password.style.border = "";
+  			spanObject.innerHTML = "";
+  			fieldObject.style.border = "";
   			return true; 
   		}
   		else
   		{
 
-  			span.innerHTML = "*password must have atleast a number, symbol and an uppercase letter";
-  			password.style.border = "1px solid red";
+  			spanObject.innerHTML = "*password must have atleast a number, symbol and an uppercase letter";
+  			fieldObject.style.border = "1px solid red";
   			return false; 
   		}
   	}
   	else
   	{
-  		span.innerHTML = "*password length shoud be between 6 and 12 characters";
-  		password.style.border = "1px solid red";
+  		spanObject.innerHTML = "*password length shoud be between 6 and 12 characters";
+  		fieldObject.style.border = "1px solid red";
   		return false; 
   	}*/
 
-  	span.innerHTML = "";
-  	password.style.borderBottom = "";
-  	return true; 
-  	
+      spanObject.innerHTML = "";
+       fieldObject.style.border = "";
+        return true; 
    }
 }
 
@@ -335,8 +333,11 @@ function validateAddUserForm()
 //function that validates the login form
 function validateLoginForm()
 {
+  var password = document.forms["loginForm"]["password"];
+  var passwordSpan=document.getElementById("passwordSpan");
+
   var usernameValidation = validateName("loginForm","username","usernameSpan");
-  var passwordValidation = validatePassword();
+  var passwordValidation = validatePassword(password,passwordSpan);
 
   if (usernameValidation & passwordValidation)
    {
@@ -552,6 +553,108 @@ function validatePayroll(fieldObject,spanObject)
     }
     return false;
 }
+
+//validates the change password form
+function validateChangePasswordForm()
+{
+  //gets the field objects
+  var currentPassword = document.forms["change_password_form"]["current_password"];
+  var newPassword = document.forms["change_password_form"]["new_password"];
+  var confirmPassword = document.forms["change_password_form"]["confirm_password"];
+
+  //gets the span objects
+  var currentPasswordSpan = document.getElementById("current_password_span");
+  var newPasswordSpan = document.getElementById("new_password_span");
+  var confirmPasswordSpan = document.getElementById("confirm_password_span");
+  var passwordNotEqualSpan = document.getElementById("passwordsNotEqualSpan");
+
+  var currentPasswordValidation = validatePassword(currentPassword,currentPasswordSpan);
+  var newPasswordValidation = validatePassword(newPassword,newPasswordSpan);
+  var confirmPasswordValidation = validatePassword(confirmPassword,confirmPasswordSpan);
+
+  if (currentPasswordValidation & newPasswordValidation & confirmPasswordValidation)
+   {
+      //checks whether the two new password fields are equal
+      if (arePasswordsEqual(newPassword,confirmPassword))
+       {
+          passwordNotEqualSpan.innerHTML="";
+          confirmCurrentPassword(currentPassword);
+       }
+       else
+       {
+          passwordNotEqualSpan.innerHTML="Passwords Not Equal";
+          newPassword.style.border="1px solid red";
+          confirmPassword.style.border="1px solid red";
+          newPassword.value="";
+          confirmPassword.value="";
+       }
+   }
+   return false;
+}
+
+//checks if the two passwords are equal
+function arePasswordsEqual(newPassword,confirmPassword)
+{
+  if (newPassword.value == confirmPassword.value)
+   {
+    return true;
+   }
+   return false;
+}
+
+//confirms the current password
+function confirmCurrentPassword(currentPassword)
+{
+  var currentPass = currentPassword.value;
+
+  //sets the url
+  url = "controllers/userController.php?currentPass="+currentPass;
+
+  //calls the ajax function
+  ajax(url, confirmPasswordResponse);
+
+}
+
+//confirm password response
+function confirmPasswordResponse(xhttp)
+{
+  var response = xhttp.responseText;
+  if (response =="password_not_correct")
+  {
+    document.getElementById("current_password_span").innerHTML="Wrong Password";
+    document.forms["change_password_form"]["current_password"].value="";
+  }
+  else if(response =="password_correct")
+  {
+    //calls the function that changes the password
+    changePassword();
+    document.getElementById("current_password_span").innerHTML="";
+  }
+}
+
+//changes the password
+function changePassword()
+{
+  //gets the password
+  var password = document.forms["change_password_form"]["confirm_password"];
+
+  //sets the url
+  url="controllers/userController.php?newPassword="+password;
+
+  //calls the ajax function
+  ajax(url, changePasswordResponse);
+}
+
+function changePasswordResponse(xhttp)
+{
+  var response = xhttp.responseText;
+  if (response =="password_changed")
+  {
+    document.getElementById("message").innerHTML="Password Changed Successfully";
+    triggerModal();
+    document.getElementById("modalBtn").onclick=resetChangePasswordForm;
+  }
+}
 //********************************************************************
 //                       MANAGE SEARCH AND LOGIN SESSION
 //********************************************************************
@@ -573,10 +676,18 @@ function searchStaff()
 }
 
 //check for user login
-function checkUserLogin()
+function checkUserLogin(name)
 {
-  //sets the url
-  url="settings/initialization.php?userLogin=yes";
+  if (name=="profile.html")
+   {
+      //sets the url
+      url="../settings/initialization.php?userLogin=yes";
+   }
+   else if (name=="index.html")
+   {
+      //sets the url
+      url="settings/initialization.php?userLogin=yes";
+   }
 
   //calls the ajax function
   ajax(url, getUserLoginStatus);
@@ -609,11 +720,18 @@ function addUnit()
 }
 
 //gets unit
-function getUnit()
+function getUnit(name)
 {
-  //sets the url
-  url="controllers/dataController.php?unit=all";
-
+  if (name == "profile.html")
+  {
+    //sets the url
+    url="../controllers/dataController.php?unit=all";
+  }
+  else if (name == "index.php")
+  {
+    //sets the url
+    url="controllers/dataController.php?unit=all";
+  }
   //calls the ajax function
   ajax(url, printData);
 }
@@ -657,11 +775,18 @@ function printData(xhttp)
 //********************************************************************
 
 //gets unit
-function getRegion()
+function getRegion(name)
 {
-  //sets the url
-  url="controllers/dataController.php?region=all";
-
+  if (name == "profile.html")
+  {
+     //sets the url
+     url="../controllers/dataController.php?region=all";
+  }
+  else if (name == "index.php")
+  {
+    //sets the url
+    url="controllers/dataController.php?region=all";
+  }
   //calls the ajax function
   ajax(url, printData);
 }
@@ -683,10 +808,18 @@ function addRegion()
 //********************************************************************
 
 //get qualification
-function getQualification()
+function getQualification(name)
 {
-  //sets the url
-  url="controllers/dataController.php?qualification=all";
+  if (name == "profile.html")
+  {
+    //sets the url
+    url="../controllers/dataController.php?qualification=all";
+  }
+  else if (name == "index.php") 
+  {
+    //sets the url
+    url="controllers/dataController.php?qualification=all";
+  }
 
   //calls the ajax function
   ajax(url, printData);
@@ -709,10 +842,18 @@ function addQualification()
 //********************************************************************
 
 //gets other section
-function getOtherSection()
+function getOtherSection(name)
 {
-  //sets the url
-  url="controllers/dataController.php?other_section=all";
+  if (name == "profile.html")
+  {
+     //sets the url
+     url="../controllers/dataController.php?other_section=all";
+  }
+  else if (name == "index.php")
+  {
+    //sets the url
+    url="controllers/dataController.php?other_section=all";
+  }
 
   //calls the ajax function
   ajax(url, printData);
@@ -812,9 +953,15 @@ function printStaffInfo(xhttp)
   for (var i =1; i<rows.length; i++)
   {
     var record = rows[i];
+
     //creates a staff card
     var staffCard= document.createElement('div');
-    staffCard.setAttribute("id","staff_card");
+    staffCard.setAttribute("class","staff_card");
+    staffCard.setAttribute("id",record["id"]);
+    staffCard.addEventListener("click", function()
+      {
+        getStaffId(this.id);
+      });
 
     //creates a row
     var row= document.createElement('div');
@@ -952,11 +1099,140 @@ function printStaffInfo(xhttp)
   }
 }
 
+function getStaffId(id)
+{
+  //sets the url 
+  url = "controllers/staffController.php?staffId="+id;
+
+  //calls the ajax function
+  ajax(url, storeStaffId);
+}
+
+//prints the staff profile
+function storeStaffId(xhttp)
+{
+  var response = xhttp.responseText;
+  if (response == "staff_id_stored") 
+  {
+     window.location.href="pages/profile.html";
+  }
+}
+
+//gets the profile information of a staff
+function getStaffProfileInformation()
+{
+  //sets the url
+  url = "../controllers/staffController.php?staff_profile_information=all";
+
+  //calls the ajax function
+  ajax(url, printStaffProfileInformation);
+}
+
+//prints the staff profile information
+function printStaffProfileInformation(xhttp)
+{
+  var data = JSON.parse(xhttp.responseText);
+  var staffRow = data[0];
+  var unit = data[1];
+  var region= data[2];
+  var $qualification= data[3];
+  var $otherSection= data[4];
+
+  var staffInfo = staffRow[1];
+  var unitInfo = unit[1];
+  var regionInfo= region[1];
+  var $qualificationInfo = $qualification[1];
+  var $otherSectionInfo = $otherSection[1];
+
+  document.getElementById('fname').innerHTML=staffInfo['first_name'];
+  document.getElementById('mname').innerHTML=staffInfo['middle_name'];
+  document.getElementById('lname').innerHTML=staffInfo['last_name'];
+  document.getElementById('dob').innerHTML=staffInfo['date_of_birth'];
+  document.getElementById('gen').innerHTML=staffInfo['gender'];
+  document.getElementById('addr').innerHTML=staffInfo['address'];
+  document.getElementById('em').innerHTML=staffInfo['email'];
+  document.getElementById('tel').innerHTML=staffInfo['tel'];
+  document.getElementById('doa').innerHTML=staffInfo['date_of_appointment'];
+  document.getElementById('Pnumber').innerHTML=staffInfo['payroll_number'];
+  document.getElementById('gr').innerHTML=staffInfo['grade'];
+  document.getElementById('desig').innerHTML=staffInfo['designation'];
+  document.getElementById('qual').innerHTML=$qualificationInfo['name'];
+  document.getElementById('re').innerHTML=regionInfo['name'];
+  document.getElementById('uni').innerHTML=unitInfo['name'];
+  document.getElementById('other').innerHTML=$otherSectionInfo['name'];
+  var editBtn = document.getElementsByName('editBtn');
+  editBtn[0].id= staffInfo['id'];
+}
+//**********************************************************************
+//                  Managing Editing a Staff Profile
+//**********************************************************************
+
+//gets the profile information of a staff
+function editStaffProfile()
+{
+  //sets the url
+  url = "../controllers/staffController.php?staff_profile_information=all";
+
+  //calls the ajax function
+  ajax(url, editStaffProfileResponse);
+}
+
+//prints the staff profile information
+function editStaffProfileResponse(xhttp)
+{
+  var data = JSON.parse(xhttp.responseText);
+  var staffRow = data[0];
+  var unit = data[1];
+  var region= data[2];
+  var $qualification= data[3];
+  var $otherSection= data[4];
+
+  var staffInfo = staffRow[1];
+  var unitInfo = unit[1];
+  var regionInfo= region[1];
+  var $qualificationInfo = $qualification[1];
+  var $otherSectionInfo = $otherSection[1];
+
+  //collects the form data
+    document.forms["edit_staff_form"]["first_name"].value=staffInfo['first_name'];
+    document.forms["edit_staff_form"]["middle_name"].value=staffInfo['middle_name'];
+    document.forms["edit_staff_form"]["last_name"].value=staffInfo['last_name'];
+    document.forms["edit_staff_form"]["date_of_birth"].value=staffInfo['date_of_birth'];
+    //document.forms["edit_staff_form"]["gender"].value=staffInfo['gender'];
+    document.forms["edit_staff_form"]["designation"].value=staffInfo['designation'];
+    document.forms["edit_staff_form"]["address"].value=staffInfo['designation'];
+    document.forms["edit_staff_form"]["email"].value=staffInfo['email'];
+    document.forms["edit_staff_form"]["telephone"].value=staffInfo['tel'];
+    document.forms["edit_staff_form"]["date_of_appointment"].value=staffInfo['date_of_appointment'];
+    document.forms["edit_staff_form"]["payroll_number"].value=staffInfo['payroll_number'];
+    document.forms["edit_staff_form"]["grade"].value=staffInfo['grade'];
+    //document.forms["edit_staff_form"]["qualification"].value=staffInfo['telephone'];
+    //document.forms["edit_staff_form"]["region"].value=staffInfo['telephone'];
+    //document.forms["edit_staff_form"]["unit"].value=staffInfo['telephone'];
+    //document.forms["edit_staff_form"]["other_section"].value=staffInfo['telephone'];
+
+
+
+  
+  /*document.getElementById('qual').innerHTML=$qualificationInfo['name'];
+  document.getElementById('re').innerHTML=regionInfo['name'];
+  document.getElementById('uni').innerHTML=unitInfo['name'];
+  document.getElementById('other').innerHTML=$otherSectionInfo['name'];
+  var editBtn = document.getElementsByName('editBtn');
+  editBtn[0].id= staffInfo['id'];*/
+}
+
+function test()
+{
+  alert("alieu");
+}
+
+
 //gets email and payroll
 function emailPayrollCheck()
 {
   //collects the email and payroll
-  var email = document.forms["add_staff_form"]["email"].value;
+  var email = document.fdorms["add_staff_form"]["email"].value;
   var payrollNumber = document.forms["add_staff_form"]["payroll_number"].value;
 
   //sets the url
@@ -1081,6 +1357,12 @@ function resetStaffForm()
   //resets the form
   document.getElementById("add_staff_form").reset();
 }
+
+function resetChangePasswordForm()
+{
+  //resets the form
+  document.getElementById("change_password_form").reset();
+}
 //*************************************************************
 //                    MANAGING USER
 //*************************************************************
@@ -1100,11 +1382,19 @@ function loginUser()
 }
 
 //get user name
-function getUserName()
+function getUserName(name)
 {
-  //sets the url
-  url= "controllers/userController.php?getUserName=yes";
-
+  if (name == "profile.html")
+  {
+    //sets the url
+     url= "../controllers/userController.php?getUserName=yes";
+  }
+  else if (name == "index.html")
+  {
+     //sets the url
+     url= "controllers/userController.php?getUserName=yes";
+  }
+ 
   //calls the ajax function
   ajax(url, printUserName);
 }
@@ -1117,17 +1407,33 @@ function printUserName(xhttp)
 }
 
 //logs out the user
-function logoutUser()
+function logoutUser(name)
 {
-  //sets the url
-  url= "login/logout.php?logout=yes";
-
-  //calls the ajax function
-  ajax(url, getLogoutUserResponse);
+  if (name == "index.html")
+  {
+    //sets the url
+    url= "login/logout.php?logout=yes";
+    ajax(url, getLogoutUserResponseFromIndex);
+  }
+  else if (name == "profile.html")
+  {
+    //sets the url
+    url= "../login/logout.php?logout=yes";
+    ajax(url, getLogoutUserResponseFromProfile);
+  }
 }
 
 //gets response of user logout
-function getLogoutUserResponse(xhttp)
+function getLogoutUserResponseFromProfile(xhttp)
+{
+  var response = xhttp.responseText;
+  if (response=="logged_out")
+   {
+    window.location.href="../login";
+   }
+}
+
+function getLogoutUserResponseFromIndex(xhttp)
 {
   var response = xhttp.responseText;
   if (response=="logged_out")
@@ -1135,7 +1441,6 @@ function getLogoutUserResponse(xhttp)
     window.location.href="login";
    }
 }
-
 
 //adds a user to the system
 function addUser()
@@ -1214,12 +1519,12 @@ function triggerModal()
 }
 
 //loads the unit, qualification, region and other section
-function loadData()
+function loadData(name)
 {
-  getQualification();
-  getUnit();
-  getRegion();
-  getOtherSection();
+  getQualification(name);
+  getUnit(name);
+  getRegion(name);
+  getOtherSection(name);
 }
 
 

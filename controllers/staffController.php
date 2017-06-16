@@ -83,7 +83,7 @@ elseif (isset($_GET['getEmailAndPayroll']) & !empty($_GET['getEmailAndPayroll'])
 elseif (isset($_GET['staff_info']) & !empty($_GET['staff_info']))
 {
 	//sets the sql
-	$sql="SELECT first_name,middle_name,last_name,gender,designation FROM odg_staff WHERE status='ACTIVE'";
+	$sql="SELECT id,first_name,middle_name,last_name,gender,designation FROM odg_staff WHERE status='ACTIVE'";
 
 	//creates a staff class
     $staff = new Staff;
@@ -142,5 +142,39 @@ elseif (isset($_GET['search']) & !empty($_GET['search']))
     //gets the rows of all the staff
     $rows = $staff->getStaffInfo($sql);
     echo json_encode($rows);
+}
+elseif (isset($_GET['staffId']) & !empty($_GET['staffId']))
+{
+    session_start();
+    $_SESSION['staff_id'] = $_GET['staffId'];
+    echo "staff_id_stored";
+}
+elseif (isset($_GET['staff_profile_information']) & !empty($_GET['staff_profile_information']))
+{
+    session_start();
+    $staffId = $_SESSION['staff_id'];
+
+    //sets the sql
+    $sql1="SELECT *FROM odg_staff WHERE status='ACTIVE' AND id='$staffId'";
+    $sql2="SELECT name FROM unit, odg_staff WHERE odg_staff.qualification_id=unit.id AND odg_staff.id='$staffId'";
+    $sql3="SELECT name FROM region, odg_staff WHERE odg_staff.qualification_id=region.id AND odg_staff.id='$staffId'";
+    $sql4="SELECT name FROM qualification, odg_staff WHERE odg_staff.qualification_id=qualification.id AND odg_staff.id='$staffId'";
+    $sql5="SELECT name FROM other_section, odg_staff WHERE odg_staff.qualification_id=other_section.id AND odg_staff.id='$staffId'";
+
+    //creates a staff class
+    $staff = new Staff;
+
+    //creates an array
+    $data = array();
+    //gets the rows of all the staff
+    $staffRow = $staff->getStaffInfo($sql1);
+    $unitName = $staff->getStaffInfo($sql2);
+    $regionName= $staff->getStaffInfo($sql3);
+    $qualificationName= $staff->getStaffInfo($sql4);
+    $otherSectionName= $staff->getStaffInfo($sql5);
+
+    $data = array($staffRow,$unitName,$regionName,$qualificationName,$otherSectionName);
+
+    echo json_encode($data);
 }
 ?>

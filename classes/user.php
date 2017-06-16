@@ -6,9 +6,19 @@ require('../database/dbConnection.php');
 class User extends Dbconnection
 {
 	//adds a user
-	function addUser($sql)
+	function userQuery($sql)
 	{
 		return $this->query($sql);
+	}
+
+	//gets the password password
+	function getPassword($sql)
+	{
+		if($this->query($sql))
+		{
+			$row = $this->getRow();
+			return $row["password"];
+		}
 	}
 }
 ?>

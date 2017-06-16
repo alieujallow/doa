@@ -18,7 +18,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body onload="getStaffInfo(), checkUserLogin(), getUserName()">
+  <body onload="checkUserLogin('index.html'), getUserName('index.html'),getStaffInfo(), loadData('index.php')">
     <div class="container-fluid">
       <div class="row">
         <nav class="navbar navbar-default">
@@ -44,7 +44,7 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="navUsername"></span><span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="#" onclick="logoutUser();">logout</a></li>
+                <li><a href="#" onclick="logoutUser('index.html');">logout</a></li>
               </ul>
             </li>
           </ul>
@@ -57,21 +57,23 @@
 <div class="container">
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#staff_list" aria-controls="home" role="tab" data-toggle="tab" onclick="getStaffInfo()">Staff List</a></li>
+    <li role="presentation"><a href="#staff_list" aria-controls="home" role="tab" data-toggle="tab" onclick="getStaffInfo()">Staff List</a></li>
 
-    <li role="presentation"><a href="#add_staff" aria-controls="profile" role="tab" data-toggle="tab" onclick="loadData()">Add Staff</a></li>
+    <li role="presentation" class="active"><a href="#add_staff" aria-controls="profile" role="tab" data-toggle="tab" onclick="loadData('index.php')">Add Staff</a></li>
 
     <li role="presentation"><a href="#add_user" aria-controls="messages" role="tab" data-toggle="tab" onclick="getRole()">Database Setup</a></li>
+
+    <li role="presentation"><a href="#settings" aria-controls="profile" role="tab" data-toggle="tab">Settings</a></li>
+
   </ul>
 
   <!-- Tab panes -->
   <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="staff_list">
+    <div role="tabpanel" class="tab-pane" id="staff_list">
     <div></div><br>
     <div class="row">
     <div class="col-md-12">
     <div id="searchForm" >
-
       <form name="searchForm" action="" method="GET" onsubmit="return validateSearchForm()">
         <div class="col-md-3">
           <input type="text" class="form-control" id="payroll_number" placeholder="payroll Number" name="payroll_number">
@@ -94,9 +96,12 @@
         <div id="error_span" style="color: red; text-align: center;"></div>
     </div><br>
     <span id="searchResult"></span>
+
+    <!-- staff list -->
     <div id="staffInfo"></div>
     </div>
-    <div role="tabpanel" class="tab-pane" id="add_staff" class="active">
+
+    <div role="tabpanel" class="tab-pane active" id="add_staff" class="active">
       <div></div><br>
       <form name="add_staff_form" onsubmit="return validateAddStaffForm()" action="" method="GET" id="add_staff_form">
         <div class="row">
@@ -223,6 +228,51 @@
         </div>
     </form>
     </div>
+
+    <!-- settings tab pane -->
+    <div role="tabpanel" class="tab-pane" id="settings">
+      <div></div><br>
+    <div class="row">
+     <div class="panel panel-success col-md-4">
+      <div class="panel-heading">Change Password</div>
+      <div class="panel-body">
+        <form name="change_password_form" onsubmit="return validateChangePasswordForm()" action="" method="GET" id="change_password_form">
+          <div class="form-group">
+            <label>Current Password</label>
+            <input type="password" class="form-control" id="current_password" placeholder="Current Password" name="current_password">
+            <span id="current_password_span" style="color: red;"></span>
+          </div>
+          <div class="form-group">
+            <label>New Password</label>
+            <input type="password" class="form-control" id="new_password" placeholder="New Password" name="new_password">
+            <span id="new_password_span" style="color: red;"></span>
+          </div>
+          <div class="form-group">
+            <label>Confirm Password</label>
+            <input type="password" class="form-control" id="confirm_password" placeholder="Confirm Password" name="confirm_password">
+            <span id="confirm_password_span" style="color: red;"></span>
+          </div>
+            <span id="passwordsNotEqualSpan" style="color: red;"></span>
+            <button type="submit" class="btn btn-success form-control">Save</button> 
+        </form>
+      </div>
+    </div>
+    <div class="panel panel-success col-md-4">
+      <div class="panel-heading">Change Username</div>
+      <div class="panel-body">
+        <form name="add_region_form" onsubmit="return validateAddRegionForm()" action="" method="GET" id="add_region_form">
+          <div class="form-group">
+            <label>Region Name</label>
+            <input type="text" class="form-control" id="region" placeholder="Region" name="region">
+            <span id="region_span_name" style="color: red;"></span>
+          </div>
+            <button type="submit" class="btn btn-success form-control">Add</button> 
+        </form>
+      </div>
+    </div>
+    </div>
+    </div>
+
      <!-- setup tab pane -->
     <div role="tabpanel" class="tab-pane" id="add_user">
     <div></div><br>

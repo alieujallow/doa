@@ -37,7 +37,7 @@
 	margin-left: 10%;
 }
 
-#staff_card
+.staff_card
 {
 	width: 32%;
 	background-color:green;
@@ -45,6 +45,7 @@
 	margin-top: 1%;
 	margin-left:1%;
 	box-shadow: 5px 5px 5px;
+	cursor: pointer; cursor: hand;
 }
 
 
@@ -69,4 +70,9 @@
 #searchResult
 {
 	margin-left: 2%;
+}
+
+#profile
+{
+	height: 25%;
 }
