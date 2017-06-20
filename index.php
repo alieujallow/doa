@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Department of Agriculture</title>
 
@@ -18,58 +19,18 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body onload="checkUserLogin('index.html'), getUserName('index.html'),getStaffInfo(), loadData('index.php')">
+  <body onload="checkUserLogin(),getUserName(),getHeader(),getStaffInfo()">
     <div class="container-fluid">
       <div class="row">
-        <nav class="navbar navbar-default">
-        <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <div style="float: left;">
-            <img src="img/mainLogo.PNG" alt="" class="img-circle" width="60" height="60" id="profile_picture">
-          </div>
-          <a class="navbar-brand" href="#" style="margin-top:5%;"> Department of Agriculture</a>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          
-          <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="navUsername"></span><span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="#" onclick="logoutUser('index.html');">logout</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
-</div>
+        <script type="text/javascript" src="layout/navBar.js"></script>
+    </div>
 </div>
 
 <div class="container">
-  <!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation"><a href="#staff_list" aria-controls="home" role="tab" data-toggle="tab" onclick="getStaffInfo()">Staff List</a></li>
-
-    <li role="presentation" class="active"><a href="#add_staff" aria-controls="profile" role="tab" data-toggle="tab" onclick="loadData('index.php')">Add Staff</a></li>
-
-    <li role="presentation"><a href="#add_user" aria-controls="messages" role="tab" data-toggle="tab" onclick="getRole()">Database Setup</a></li>
-
-    <li role="presentation"><a href="#settings" aria-controls="profile" role="tab" data-toggle="tab">Settings</a></li>
-
-  </ul>
-
+  <div id="listContainer"></div>
   <!-- Tab panes -->
   <div class="tab-content">
-    <div role="tabpanel" class="tab-pane" id="staff_list">
+    <div role="tabpanel" class="tab-pane active" id="staff_list">
     <div></div><br>
     <div class="row">
     <div class="col-md-12">
@@ -101,27 +62,26 @@
     <div id="staffInfo"></div>
     </div>
 
-    <div role="tabpanel" class="tab-pane active" id="add_staff" class="active">
+    <div role="tabpanel" class="tab-pane" id="add_staff">
       <div></div><br>
       <form name="add_staff_form" onsubmit="return validateAddStaffForm()" action="" method="GET" id="add_staff_form">
         <div class="row">
           <div class="col-md-10">
               <div class="row">
                 <div class="form-group col-md-4">
-                  <div id="test1"></div><div id="test2"></div>
                   <label>First Name</label><br>
                   <input type="text" class="form-control" id="first_name" placeholder="First Name" name="first_name">
-                  <span id="first_name_span" style="color: red;"></span>
+                  <span id="add_staff_fname_span" style="color: red;"></span>
                 </div>
                 <div class="form-group col-md-4">
                   <label>Middle Name</label><br>
                   <input type="text" class="form-control" id="middle_name" placeholder="Middle Name" name="middle_name">
-                  <span id="middle_name_span" style="color: red;"></span>
+                  <span id="add_staff_mname_span" style="color: red;"></span>
                 </div>
                 <div class="form-group col-md-4">
                   <label>Last Name</label><br>
                   <input type="text" class="form-control" id="last_name" placeholder="Last Name" name="last_name">
-                  <span id="last_name_span" style="color: red;"></span>
+                  <span id="add_staff_lname_span" style="color: red;"></span>
                 </div>
               </div><br>
               <div class="row">
@@ -149,17 +109,17 @@
                 <div class="form-group col-md-4">
                   <label>Address</label><br>
                   <input type="text" class="form-control" id="address" placeholder="address">
-                  <span id="address_span" style="color: red;"></span>
+                  <span id="add_staff_address_span" style="color: red;"></span>
                 </div>
                 <div class="form-group col-md-4">
                   <label>Email</label><br>
-                  <input type="Email" class="form-control" id="email" placeholder="email">
-                  <span id="email_span" style="color: red;"></span>
+                  <input type="Email" class="form-control" id="email" placeholder="email" name="email">
+                  <span id="add_staff_email_span" style="color: red;"></span>
                 </div>
                 <div class="form-group col-md-4">
                   <label>Telephone</label><br>
-                  <input type="text" class="form-control" id="telephone" placeholder="telephone">
-                  <span id="telephone_span" style="color: red;"></span>
+                  <input type="text" class="form-control" id="telephone" placeholder="telephone" name="telephone">
+                  <span id="add_staff_telephone_span" style="color: red;"></span>
                 </div>
               </div><br>
               <div class="row">
@@ -171,12 +131,12 @@
                 <div class="form-group col-md-4">
                   <label>Paroll Number</label><br>
                   <input type="text" class="form-control" id="payroll_number" placeholder="Payroll Number" name="payroll_number">
-                  <span id="payroll_number_span" name="payroll_number_span" style="color: red;"></span>
+                  <span id="add_staff_payroll_span" name="payroll_number_span" style="color: red;"></span>
                 </div>
                 <div class="form-group col-md-4">
                   <label>Grade</label><br>
                   <input type="text" class="form-control" id="grade" placeholder="grade">
-                  <span id="grade_span" style="color: red;"></span>
+                  <span id="add_staff_grade_span" style="color: red;"></span>
                 </div>
               </div><br>
               <div class="row">
@@ -210,11 +170,13 @@
                   </select>
                   <span id="other_section_span" style="color: red;"></span>
                 </div>
-              </div><br>
-              <div class="row">
-                <div id="btnHolder">
-                    <button type="reset" class="btn btn-danger btn-lg staff_btn">Cancel</button>
-                     <button type="submit" class="btn btn-primary btn-lg staff_btn">Save</button>
+                <div class="form-group col-md-4">
+                  <label></label><br>
+                  <button type="reset" class="btn btn-danger btn-lg form-control">Cancel</button>
+                </div>
+                <div class="form-group col-md-4">
+                  <label></label><br>
+                  <button type="submit" class="btn btn-primary btn-lg form-control">Save</button>
                 </div>
               </div>
           </div>
@@ -260,11 +222,11 @@
     <div class="panel panel-success col-md-4">
       <div class="panel-heading">Change Username</div>
       <div class="panel-body">
-        <form name="add_region_form" onsubmit="return validateAddRegionForm()" action="" method="GET" id="add_region_form">
+        <form name="change_username_form" onsubmit="return validateChangeUsernameForm()" action="" method="GET" id="change_username_form">
           <div class="form-group">
-            <label>Region Name</label>
-            <input type="text" class="form-control" id="region" placeholder="Region" name="region">
-            <span id="region_span_name" style="color: red;"></span>
+            <label>Username</label>
+            <input type="text" class="form-control" id="username" placeholder="Username" name="username">
+            <span id="change_username_span" style="color: red;"></span>
           </div>
             <button type="submit" class="btn btn-success form-control">Add</button> 
         </form>
@@ -274,7 +236,7 @@
     </div>
 
      <!-- setup tab pane -->
-    <div role="tabpanel" class="tab-pane" id="add_user">
+    <div role="tabpanel" class="tab-pane" id="dbSetup">
     <div></div><br>
     <div class="row">
     <div class="panel panel-success col-md-4">
@@ -372,5 +334,6 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/script.js"></script>
+    <script type="text/javascript" src="layout/header.js"></script>
   </body>
 </html>

@@ -18,40 +18,11 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body onload="checkUserLogin('profile.html'), getUserName('profile.html'),getStaffProfileInformation()">
+  <body onload="checkUserLogin(),getUserName(),getStaffProfileInformation()">
     <div class="container-fluid">
       <div class="row">
-        <nav class="navbar navbar-default">
-        <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <div style="float: left;">
-            <img src="../img/mainLogo.PNG" alt="" class="img-circle" width="60" height="60" id="profile_picture">
-          </div>
-          <a class="navbar-brand" href="#" style="margin-top:5%;"> Department of Agriculture</a>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          
-          <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="navUsername"></span><span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="#" onclick="logoutUser('profile.html');">logout</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div><!-- /.navbar-collapse -->
-      </div><!-- /.container-fluid -->
-    </nav>
-   </div>
+        <script type="text/javascript" src="../layout/navBar.js"></script>
+      </div>
 </div><!-- /.container-fluid -->
 <div class="container">
   <div class="row">
@@ -138,129 +109,142 @@
       <img src="../img/placeHolder.JPG" alt="" class="img-circle" width="175" height="175" id="profile_picture" style="margin-top:70%;">
     </div>
   </div>
-    <button name="editBtn" id=""  onclick="editStaffProfile(), loadData('profile.html')"   type="button" data-toggle="modal" data-target=".bs-example-modal-lg">EDIT</button>
+
+  <div class="row">
+    <div class="col-md-2">
+      <button type="button" class="form-control btn-danger" onclick="reloadPage()">BACK</button>
+    </div>
+    <div class="col-md-2">
+      <button class="form-control btn-warning" type="button" >DEACTIVATE</button>
+    </div>
+    <div class="col-md-2">
+      <button name="editBtn" id=""  onclick="editStaffProfile(), loadData('profile.html')"   type="button" data-toggle="modal" data-target=".bs-example-modal-lg" class="btn-primary form-control">EDIT</button>
+    </div>
+    <div class="col-md-2">
+      <button id="" class="form-control btn-info"  type="button" onclick="printStaffProfile()">PRINT</button>
+    </div>
+  </div>
 </div>
     
 
 
   
   <!-- Large modal -->
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="edit_staff_modal" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div></div><br>
-      <form name="edit_staff_form" onsubmit="return validateAddStaffForm()" action="" method="GET" id="edit_staff_form">
+      <form name="edit_staff_form" onsubmit="return validateEditStaffForm()" action="" method="GET" id="edit_staff_form">
         <div class="row">
           <div class="col-md-8" style="margin-left:2%;">
               <div class="row">
-                <div class="form-group col-md-3">
-                  <div id="test1"></div><div id="test2"></div>
+                <div class="form-group col-md-4">
                   <label>First Name</label><br>
                   <input type="text" class="form-control" id="first_name" placeholder="First Name" name="first_name">
-                  <span id="first_name_span" style="color: red;"></span>
+                  <span id="edit_staff_fname_span" style="color: red;"></span>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                   <label>Middle Name</label><br>
                   <input type="text" class="form-control" id="middle_name" placeholder="Middle Name" name="middle_name">
-                  <span id="middle_name_span" style="color: red;"></span>
+                  <span id="edit_staff_mname_span" style="color: red;"></span>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                   <label>Last Name</label><br>
                   <input type="text" class="form-control" id="last_name" placeholder="Last Name" name="last_name">
-                  <span id="last_name_span" style="color: red;"></span>
+                  <span id="edit_staff_lname_span" style="color: red;"></span>
                 </div>
               </div><br>
               <div class="row">
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                   <label>date of birth</label><br>
                   <input type="date" class="form-control" id="date_of_birth">
-                  <span id="date_of_birth_span" style="color: red;"></span>
+                  <span id="edit_staff_date_of_birth_span" style="color: red;"></span>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                   <label>Gender</label><br>
                   <select id="gender" class="form-control">
                     <option value="">Select..</option>
                     <option value="M">Male</option>
                     <option value="F">Female</option>
                   </select>
-                  <span id="gender_span" style="color: red;"></span>
+                  <span id="edit_staff_gender_span" style="color: red;"></span>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                   <label>Designation</label><br>
-                  <input type="text" class="form-control" id="designation" placeholder="designation">
-                  <span id="designation_span" style="color: red;"></span>
+                  <input type="text" class="form-control" id="designation" placeholder="designation" name="designation">
+                  <span id="edit_staff_designation_span" style="color: red;"></span>
                 </div>
               </div><br>
               <div class="row">
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                   <label>Address</label><br>
-                  <input type="text" class="form-control" id="address" placeholder="address">
-                  <span id="address_span" style="color: red;"></span>
+                  <input type="text" class="form-control" id="address" placeholder="address" name="address">
+                  <span id="edit_staff_address_span" style="color: red;"></span>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                   <label>Email</label><br>
-                  <input type="Email" class="form-control" id="email" placeholder="email">
-                  <span id="email_span" style="color: red;"></span>
+                  <input type="Email" class="form-control" id="email" placeholder="email" name="email">
+                  <span id="edit_staff_email_span" style="color: red;"></span>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                   <label>Telephone</label><br>
-                  <input type="text" class="form-control" id="telephone" placeholder="telephone">
-                  <span id="telephone_span" style="color: red;"></span>
+                  <input type="text" class="form-control" id="telephone" placeholder="telephone" name="telephone">
+                  <span id="edit_staff_telephone_span" style="color: red;"></span>
                 </div>
               </div><br>
               <div class="row">
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                   <label>Date of Appointment</label><br>
                   <input type="date" class="form-control" id="date_of_appointment">
-                  <span id="date_of_appointment_span" style="color: red;"></span>
+                  <span id="edit_staff_date_of_appointment_span" style="color: red;"></span>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                   <label>Paroll Number</label><br>
                   <input type="text" class="form-control" id="payroll_number" placeholder="Payroll Number" name="payroll_number">
-                  <span id="payroll_number_span" name="payroll_number_span" style="color: red;"></span>
+                  <span id="edit_staff_payroll_number_span" style="color: red;"></span>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                   <label>Grade</label><br>
                   <input type="text" class="form-control" id="grade" placeholder="grade">
-                  <span id="grade_span" style="color: red;"></span>
+                  <span id="edit_staff_grade_span" style="color: red;"></span>
                 </div>
               </div><br>
               <div class="row">
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                   <label>Qualification</label><br>
                   <select id="qualification" class="form-control">
                     <option value="">Select...</option>
                   </select>
-                  <span id="qualification_span" style="color: red;"></span>
+                  <span id="edit_staff_qualification_span" style="color: red;"></span>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                   <label>Region</label><br>
                   <select id="region" class="form-control">
                     <option value="">Select..</option>
                   </select>
-                  <span id="region_span" style="color: red;"></span>
+                  <span id="edit_staff_region_span" style="color: red;"></span>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                   <label>Unit</label><br>
                   <select id="unit" class="form-control">
                     <option value="">Select...</option>
                   </select>
-                  <span id="unit_span" style="color: red;"></span>
+                  <span id="edit_staff_unit_span" style="color: red;"></span>
                 </div>
               </div><br>
               <div class="row">
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                   <label>Other Section</label><br>
                   <select id="other_section" class="form-control">
                     <option value="">Select..</option>
                   </select>
-                  <span id="other_section_span" style="color: red;"></span>
+                  <span id="edit_staff_other_section_span" style="color: red;"></span>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                   <label></label><br>
-                  <button type="reset" class="btn btn-danger btn-lg form-control">Cancel</button>
+                  <button type="reset" class="btn btn-danger btn-lg form-control" data-dismiss="modal">Cancel</button>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                   <label></label><br>
                    <button type="submit" class="btn btn-primary btn-lg form-control">Save</button>
                 </div>    

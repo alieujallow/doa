@@ -80,6 +80,12 @@ elseif (isset($_GET['newPassword']) & !empty($_GET['newPassword']))
         echo "password_not_changed";
     } 
 }
+elseif (isset($_GET['getUserRole']) & !empty($_GET['getUserRole']))
+{   
+    session_start();
+    $userRole = $_SESSION['role_id'];
+    echo $userRole;
+}
 
  /*$newPass ="12";
  $newPass = password_hash($newPass,PASSWORD_DEFAULT);

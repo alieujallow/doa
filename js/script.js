@@ -61,14 +61,14 @@ function validateSelectInputField(form_name,object_name,span_name)
 }
 
 //validates the address
-function validateAddress()
+function validateAddress(form_name,object_name,span_name)
 {
-  var address = document.forms["add_staff_form"]["address"];
-  var span = document.getElementById("address_span");
+  var address = document.forms[form_name][object_name];
+  var span = document.getElementById(span_name);
 
   if (address.value=="") 
   {
-    span.innerHTML = "*address must be filled";
+    span.innerHTML = "*required";
     address.style.border= "1px solid red";
     return false; 
   }
@@ -88,7 +88,7 @@ function validateDate(form_name,object_name,span_name)
 
   if (date.value=="") 
   {
-    span.innerHTML = "*date must be filled";
+    span.innerHTML = "*required";
     date.style.border= "1px solid red";
     return false; 
   }
@@ -101,13 +101,13 @@ function validateDate(form_name,object_name,span_name)
 }
 
 //validates the email
-function validateEmail()
+function validateEmail(form_name,object_name,span_name)
 {
-  var email = document.forms["add_staff_form"]["email"];
-  var span = document.getElementById("email_span");
+  var email = document.forms[form_name][object_name];
+  var span = document.getElementById(span_name);
   if (email.value=="") 
   {
-    span.innerHTML = "*email must be filled";
+    span.innerHTML = "*required";
     email.style.border= "1px solid red";
     return false; 
   }
@@ -120,13 +120,13 @@ function validateEmail()
 }
 
 //validates the grade
-function validateGrade()
+function validateGrade(form_name,object_name,span_name)
 {
-  var grade = document.forms["add_staff_form"]["grade"];
-  var span = document.getElementById("grade_span");
+  var grade = document.forms[form_name][object_name];
+  var span = document.getElementById(span_name);
   if (grade.value=="") 
   {
-    span.innerHTML = "*grade must be filled";
+    span.innerHTML = "*required";
     grade.style.border= "1px solid red";
     return false; 
   }
@@ -178,13 +178,13 @@ function validateDesignation(formName,fieldName,spanName)
   }
 }
 //validates the email
-function validateTelephone()
+function validateTelephone(form_name,object_name,span_name)
 {
-  var telephone = document.forms["add_staff_form"]["telephone"];
-  var span = document.getElementById("telephone_span");
+  var telephone = document.forms[form_name][object_name];
+  var span = document.getElementById(span_name);
   if (telephone.value=="") 
   {
-    span.innerHTML = "*telephone must be filled";
+    span.innerHTML = "*required";
     telephone.style.border= "1px solid red";
     return false; 
   }
@@ -245,20 +245,20 @@ function validatePassword(fieldObject,spanObject)
 //validates the login form
 function validateAddStaffForm()
 {
-  var firstNameValidation = validateName("add_staff_form","first_name","first_name_span");
-  var middleNameValidation = validateName("add_staff_form","middle_name","middle_name_span");
-  var lastNameValidation = validateName("add_staff_form","last_name","last_name_span");
-  var addressValidation = validateAddress();
-  var emailValidation = validateEmail();
-  var telephoneValidation = validateTelephone();
+  var firstNameValidation = validateName("add_staff_form","first_name","add_staff_fname_span");
+  var middleNameValidation = validateName("add_staff_form","middle_name","add_staff_mname_span");
+  var lastNameValidation = validateName("add_staff_form","last_name","add_staff_lname_span");
+  var addressValidation = validateAddress("add_staff_form","address","add_staff_address_span");
+  var emailValidation = validateEmail("add_staff_form","email","add_staff_email_span");
+  var telephoneValidation = validateTelephone("add_staff_form","telephone","add_staff_telephone_span");
   var designationValidation = validateDesignation("add_staff_form","designation","designation_span");
   var qualificationValidation = validateSelectInputField("add_staff_form","qualification","qualification_span");
   var genderValidation = validateSelectInputField("add_staff_form","gender","gender_span");
   var unitValidation = validateSelectInputField("add_staff_form","unit","unit_span");
   var regionValidation = validateSelectInputField("add_staff_form","region","region_span");
   var otherSectionValidation = validateSelectInputField("add_staff_form","other_section","other_section_span");
-  var gradeValidation = validateGrade();
-  var payrollNumberValidation = validatePayrollNumber("add_staff_form","payroll_number","payroll_number_span");
+  var gradeValidation = validateGrade("add_staff_form","grade","add_staff_grade_span");
+  var payrollNumberValidation = validatePayrollNumber("add_staff_form","payroll_number","add_staff_payroll_span");
   var appointmentDateValidation = validateDate("add_staff_form","date_of_appointment","date_of_appointment_span");
   var dateOfBirthValidation = validateDate("add_staff_form","date_of_birth","date_of_birth_span");
 
@@ -267,7 +267,6 @@ function validateAddStaffForm()
     & genderValidation & unitValidation & regionValidation & otherSectionValidation & gradeValidation
     & payrollNumberValidation & appointmentDateValidation & dateOfBirthValidation) 
   {
-
    //calls the email payroll check
     emailPayrollCheck();
   }
@@ -636,7 +635,7 @@ function confirmPasswordResponse(xhttp)
 function changePassword()
 {
   //gets the password
-  var password = document.forms["change_password_form"]["confirm_password"];
+  var password = document.forms["change_password_form"]["confirm_password"].value;
 
   //sets the url
   url="controllers/userController.php?newPassword="+password;
@@ -655,6 +654,55 @@ function changePasswordResponse(xhttp)
     document.getElementById("modalBtn").onclick=resetChangePasswordForm;
   }
 }
+
+//validates the region Form
+function validateChangeUsernameForm()
+{
+  var usernameValidation = validateName("change_username_form","username","change_username_span");
+  if (usernameValidation) 
+  {
+    //checks if the username exists or not
+    addRegion();
+  }
+  return false;
+}
+
+
+
+
+
+
+//validates the edit Staff form
+function validateEditStaffForm()
+{
+  var firstNameValidation = validateName("edit_staff_form","first_name","edit_staff_fname_span");
+  var middleNameValidation = validateName("edit_staff_form","middle_name","edit_staff_mname_span");
+  var lastNameValidation = validateName("edit_staff_form","last_name","edit_staff_lname_span");
+  var addressValidation = validateAddress("edit_staff_form","address","edit_staff_address_span");
+  var emailValidation = validateEmail("edit_staff_form","email","edit_staff_email_span");
+  var telephoneValidation = validateTelephone("edit_staff_form","telephone","edit_staff_telephone_span");
+  var designationValidation = validateDesignation("edit_staff_form","designation","edit_staff_designation_span");
+  var qualificationValidation = validateSelectInputField("edit_staff_form","qualification","edit_staff_qualification_span");
+  var genderValidation = validateSelectInputField("edit_staff_form","gender","edit_staff_gender_span");
+  var unitValidation = validateSelectInputField("edit_staff_form","unit","edit_staff_unit_span");
+  var regionValidation = validateSelectInputField("edit_staff_form","region","edit_staff_region_span");
+  var otherSectionValidation = validateSelectInputField("edit_staff_form","other_section","edit_staff_other_section_span");
+  var gradeValidation = validateGrade("edit_staff_form","grade","edit_staff_grade_span");
+  var payrollNumberValidation = validatePayrollNumber("edit_staff_form","payroll_number","edit_staff_payroll_number_span");
+  var appointmentDateValidation = validateDate("edit_staff_form","date_of_appointment","edit_staff_date_of_appointment_span");
+  var dateOfBirthValidation = validateDate("edit_staff_form","date_of_birth","edit_staff_date_of_birth_span");
+
+  if (firstNameValidation & middleNameValidation & lastNameValidation & addressValidation
+    & emailValidation & telephoneValidation & designationValidation & qualificationValidation
+    & genderValidation & unitValidation & regionValidation & otherSectionValidation & gradeValidation
+    & payrollNumberValidation & appointmentDateValidation & dateOfBirthValidation) 
+  {
+   //call the add staff funtion
+   addStaff("edit_staff_form","edit_staff");
+  }
+  return false;
+}
+
 //********************************************************************
 //                       MANAGE SEARCH AND LOGIN SESSION
 //********************************************************************
@@ -676,19 +724,11 @@ function searchStaff()
 }
 
 //check for user login
-function checkUserLogin(name)
+function checkUserLogin()
 {
-  if (name=="profile.html")
-   {
-      //sets the url
-      url="../settings/initialization.php?userLogin=yes";
-   }
-   else if (name=="index.html")
-   {
-      //sets the url
-      url="settings/initialization.php?userLogin=yes";
-   }
-
+  //sets the url
+  url="http://localhost/doa/settings/initialization.php?userLogin=yes";
+   
   //calls the ajax function
   ajax(url, getUserLoginStatus);
 }
@@ -700,7 +740,7 @@ function getUserLoginStatus(xhttp)
   if (response =="user_not_loggedin")
   {
     //redirect user to login
-    window.location.href = "login";
+    window.location.href = "http://localhost/doa/login/";
   }
 }
 //********************************************************************
@@ -720,18 +760,11 @@ function addUnit()
 }
 
 //gets unit
-function getUnit(name)
+function getUnit()
 {
-  if (name == "profile.html")
-  {
-    //sets the url
-    url="../controllers/dataController.php?unit=all";
-  }
-  else if (name == "index.php")
-  {
-    //sets the url
-    url="controllers/dataController.php?unit=all";
-  }
+  //sets the url
+  url="http://localhost/doa/controllers/dataController.php?unit=all";
+
   //calls the ajax function
   ajax(url, printData);
 }
@@ -775,18 +808,12 @@ function printData(xhttp)
 //********************************************************************
 
 //gets unit
-function getRegion(name)
+function getRegion()
 {
-  if (name == "profile.html")
-  {
-     //sets the url
-     url="../controllers/dataController.php?region=all";
-  }
-  else if (name == "index.php")
-  {
-    //sets the url
-    url="controllers/dataController.php?region=all";
-  }
+  
+  //sets the url
+  url="http://localhost/doa/controllers/dataController.php?region=all";
+
   //calls the ajax function
   ajax(url, printData);
 }
@@ -808,18 +835,11 @@ function addRegion()
 //********************************************************************
 
 //get qualification
-function getQualification(name)
+function getQualification()
 {
-  if (name == "profile.html")
-  {
-    //sets the url
-    url="../controllers/dataController.php?qualification=all";
-  }
-  else if (name == "index.php") 
-  {
-    //sets the url
-    url="controllers/dataController.php?qualification=all";
-  }
+  
+  //sets the url
+  url="http://localhost/doa/controllers/dataController.php?qualification=all";
 
   //calls the ajax function
   ajax(url, printData);
@@ -842,18 +862,10 @@ function addQualification()
 //********************************************************************
 
 //gets other section
-function getOtherSection(name)
+function getOtherSection()
 {
-  if (name == "profile.html")
-  {
-     //sets the url
-     url="../controllers/dataController.php?other_section=all";
-  }
-  else if (name == "index.php")
-  {
-    //sets the url
-    url="controllers/dataController.php?other_section=all";
-  }
+  //sets the url
+  url="http://localhost/doa/controllers/dataController.php?other_section=all";
 
   //calls the ajax function
   ajax(url, printData);
@@ -876,35 +888,49 @@ function addOtherSection()
 //********************************************************************
 
 //adds a staff to the systme
-function addStaff()
+function addStaff(form_name,determinant)
 {
    //collects the form data
-    var firstName = document.forms["add_staff_form"]["first_name"].value;
-    var middleName = document.forms["add_staff_form"]["middle_name"].value;
-    var lastName = document.forms["add_staff_form"]["last_name"].value;
-    var dateOfBirth = document.forms["add_staff_form"]["date_of_birth"].value;
-    var gender = document.forms["add_staff_form"]["gender"].value;
-    var designation = document.forms["add_staff_form"]["designation"].value;
-    var address = document.forms["add_staff_form"]["address"].value;
-    var email = document.forms["add_staff_form"]["email"].value;
-    var telephone = document.forms["add_staff_form"]["telephone"].value;
-    var dateOfAppointment = document.forms["add_staff_form"]["date_of_appointment"].value;
-    var payrollNumber = document.forms["add_staff_form"]["payroll_number"].value;
-    var grade = document.forms["add_staff_form"]["grade"].value;
-    var qualification = document.forms["add_staff_form"]["qualification"].value;
-    var region = document.forms["add_staff_form"]["region"].value;
-    var unit = document.forms["add_staff_form"]["unit"].value;
-    var otherSection = document.forms["add_staff_form"]["other_section"].value;
+    var firstName = document.forms[form_name]["first_name"].value;
+    var middleName = document.forms[form_name]["middle_name"].value;
+    var lastName = document.forms[form_name]["last_name"].value;
+    var dateOfBirth = document.forms[form_name]["date_of_birth"].value;
+    var gender = document.forms[form_name]["gender"].value;
+    var designation = document.forms[form_name]["designation"].value;
+    var address = document.forms[form_name]["address"].value;
+    var email = document.forms[form_name]["email"].value;
+    var telephone = document.forms[form_name]["telephone"].value;
+    var dateOfAppointment = document.forms[form_name]["date_of_appointment"].value;
+    var payrollNumber = document.forms[form_name]["payroll_number"].value;
+    var grade = document.forms[form_name]["grade"].value;
+    var qualification = document.forms[form_name]["qualification"].value;
+    var region = document.forms[form_name]["region"].value;
+    var unit = document.forms[form_name]["unit"].value;
+    var otherSection = document.forms[form_name]["other_section"].value;
     var profilePic=getStaffProfilePic();
     
-    //sets the url
-    url= "controllers/staffController.php?first_name="
+    if (form_name=="edit_staff_form")
+    {
+      //sets the url
+      url= "../controllers/staffController.php?first_name="
         +firstName+"&middle_name="+middleName+"&last_name="+lastName+"&date_of_birth="
         +dateOfBirth+"&gender="+gender+"&designation="+designation+"&address="+address
         +"&email="+email+"&telephone="+telephone+"&date_of_appointment="+dateOfAppointment
         +"&payroll_number="+payrollNumber+"&grade="+grade+"&qualification="+qualification
         +"&region="+region+"&unit="+unit+"&other_section="+otherSection+"&profile_pic="+profilePic
-        +"&add_staff=yes";
+        +"&determinant="+determinant;
+    }
+    else if (form_name=="add_staff_form")
+    {
+      //sets the url
+      url= "controllers/staffController.php?first_name="
+        +firstName+"&middle_name="+middleName+"&last_name="+lastName+"&date_of_birth="
+        +dateOfBirth+"&gender="+gender+"&designation="+designation+"&address="+address
+        +"&email="+email+"&telephone="+telephone+"&date_of_appointment="+dateOfAppointment
+        +"&payroll_number="+payrollNumber+"&grade="+grade+"&qualification="+qualification
+        +"&region="+region+"&unit="+unit+"&other_section="+otherSection+"&profile_pic="+profilePic
+        +"&determinant="+determinant;
+    }
 
     //calls the ajax function
     ajax(url, printAddStaffResponse);
@@ -914,19 +940,29 @@ function addStaff()
 function printAddStaffResponse(xhttp)
 {
   var response = xhttp.responseText;
-
   if (response=="staff_added") 
   {
-    //triggers the moadal
-    $('#staff_modal').modal({
-      backdrop: 'static', 
-      keyboard: false
-    }) 
+    document.getElementById("message").innerHTML="Staff Added Successfully";
+    triggerModal();
+    document.getElementById("modalBtn").onclick=resetStaffForm;
   }
   else if(response=="pic")
   {
      document.getElementById("email_span").innerHTML="pic added";
   }
+  else if(response=="staff_edited")
+  {
+    alert("Your Changes are Successfully Saved");
+
+    //make the modal disappear
+    $(function ()
+    {
+      $('#edit_staff_modal').modal('toggle');
+    });
+    //refresh the staff profile
+    getStaffProfileInformation();
+  }
+
 }
 
 //get staff info
@@ -1156,6 +1192,7 @@ function printStaffProfileInformation(xhttp)
   document.getElementById('Pnumber').innerHTML=staffInfo['payroll_number'];
   document.getElementById('gr').innerHTML=staffInfo['grade'];
   document.getElementById('desig').innerHTML=staffInfo['designation'];
+  
   document.getElementById('qual').innerHTML=$qualificationInfo['name'];
   document.getElementById('re').innerHTML=regionInfo['name'];
   document.getElementById('uni').innerHTML=unitInfo['name'];
@@ -1182,23 +1219,14 @@ function editStaffProfileResponse(xhttp)
 {
   var data = JSON.parse(xhttp.responseText);
   var staffRow = data[0];
-  var unit = data[1];
-  var region= data[2];
-  var $qualification= data[3];
-  var $otherSection= data[4];
-
   var staffInfo = staffRow[1];
-  var unitInfo = unit[1];
-  var regionInfo= region[1];
-  var $qualificationInfo = $qualification[1];
-  var $otherSectionInfo = $otherSection[1];
-
+  
   //collects the form data
     document.forms["edit_staff_form"]["first_name"].value=staffInfo['first_name'];
     document.forms["edit_staff_form"]["middle_name"].value=staffInfo['middle_name'];
     document.forms["edit_staff_form"]["last_name"].value=staffInfo['last_name'];
     document.forms["edit_staff_form"]["date_of_birth"].value=staffInfo['date_of_birth'];
-    //document.forms["edit_staff_form"]["gender"].value=staffInfo['gender'];
+    document.forms["edit_staff_form"]["gender"].value=staffInfo['gender'];
     document.forms["edit_staff_form"]["designation"].value=staffInfo['designation'];
     document.forms["edit_staff_form"]["address"].value=staffInfo['designation'];
     document.forms["edit_staff_form"]["email"].value=staffInfo['email'];
@@ -1206,38 +1234,22 @@ function editStaffProfileResponse(xhttp)
     document.forms["edit_staff_form"]["date_of_appointment"].value=staffInfo['date_of_appointment'];
     document.forms["edit_staff_form"]["payroll_number"].value=staffInfo['payroll_number'];
     document.forms["edit_staff_form"]["grade"].value=staffInfo['grade'];
-    //document.forms["edit_staff_form"]["qualification"].value=staffInfo['telephone'];
-    //document.forms["edit_staff_form"]["region"].value=staffInfo['telephone'];
-    //document.forms["edit_staff_form"]["unit"].value=staffInfo['telephone'];
-    //document.forms["edit_staff_form"]["other_section"].value=staffInfo['telephone'];
-
-
-
-  
-  /*document.getElementById('qual').innerHTML=$qualificationInfo['name'];
-  document.getElementById('re').innerHTML=regionInfo['name'];
-  document.getElementById('uni').innerHTML=unitInfo['name'];
-  document.getElementById('other').innerHTML=$otherSectionInfo['name'];
-  var editBtn = document.getElementsByName('editBtn');
-  editBtn[0].id= staffInfo['id'];*/
+    document.forms["edit_staff_form"]["qualification"].value=staffInfo['qualification_id'];
+    document.forms["edit_staff_form"]["region"].value=staffInfo['region_id'];
+    document.forms["edit_staff_form"]["unit"].value=staffInfo['unit_id'];
+    document.forms["edit_staff_form"]["other_section"].value=staffInfo['other_section_id'];
 }
-
-function test()
-{
-  alert("alieu");
-}
-
 
 //gets email and payroll
 function emailPayrollCheck()
 {
   //collects the email and payroll
-  var email = document.fdorms["add_staff_form"]["email"].value;
+  var email = document.forms["add_staff_form"]["email"].value;
   var payrollNumber = document.forms["add_staff_form"]["payroll_number"].value;
 
   //sets the url
   url= "controllers/staffController.php?email="+email+"&payroll_number="+payrollNumber
-  +"&getEmailAndPayroll=yes";
+  +"&emailPayroll=yes";
 
   //calls the ajax function
   ajax(url, emailPayrollResponse);
@@ -1251,7 +1263,7 @@ function emailPayrollResponse(xhttp)
    if (array[0]=="email_exists")
     {
       var email = document.forms["add_staff_form"]["email"];
-      var span = document.getElementById("email_span");
+      var span = document.getElementById("add_staff_email_span");
 
       span.innerHTML="*email exists."
       email.style.border="1px solid red";
@@ -1261,7 +1273,7 @@ function emailPayrollResponse(xhttp)
     if (array[1]=="payroll_number_exists")
     {
       var payrollNumber = document.forms["add_staff_form"]["payroll_number"];
-      var span = document.getElementById("payroll_number_span");
+      var span = document.getElementById("add_staff_payroll_span");
 
       span.innerHTML="*payroll number exists."
       payrollNumber.style.border="1px solid red";
@@ -1269,8 +1281,7 @@ function emailPayrollResponse(xhttp)
 
     if (count==2) 
     {
-      //call the add staff funtion
-      addStaff();
+       addStaff("add_staff_form","add_staff");
     }
 }
 
@@ -1320,6 +1331,17 @@ function getAddResponse(xhttp)
 //*****************************************************
 //                MANAGING RESETTING THE FORMS
 //*****************************************************
+
+function reloadPage()
+{
+  window.location.href="../";
+}
+
+//function that prints a staff profile
+function printStaffProfile()
+{
+   window.print();
+}
 //function that resets the add staff form
 function resetUnitForm()
 {
@@ -1382,19 +1404,11 @@ function loginUser()
 }
 
 //get user name
-function getUserName(name)
+function getUserName()
 {
-  if (name == "profile.html")
-  {
-    //sets the url
-     url= "../controllers/userController.php?getUserName=yes";
-  }
-  else if (name == "index.html")
-  {
-     //sets the url
-     url= "controllers/userController.php?getUserName=yes";
-  }
- 
+  //sets the url
+  url= "http://localhost/doa/controllers/userController.php?getUserName=yes";
+
   //calls the ajax function
   ajax(url, printUserName);
 }
@@ -1407,38 +1421,20 @@ function printUserName(xhttp)
 }
 
 //logs out the user
-function logoutUser(name)
+function logoutUser()
 {
-  if (name == "index.html")
-  {
-    //sets the url
-    url= "login/logout.php?logout=yes";
-    ajax(url, getLogoutUserResponseFromIndex);
-  }
-  else if (name == "profile.html")
-  {
-    //sets the url
-    url= "../login/logout.php?logout=yes";
-    ajax(url, getLogoutUserResponseFromProfile);
-  }
+  //sets the url
+  url= "http://localhost/doa/login/logout.php?logout=yes";
+  ajax(url, getLogoutUserResponse);
 }
 
 //gets response of user logout
-function getLogoutUserResponseFromProfile(xhttp)
+function getLogoutUserResponse(xhttp)
 {
   var response = xhttp.responseText;
   if (response=="logged_out")
    {
-    window.location.href="../login";
-   }
-}
-
-function getLogoutUserResponseFromIndex(xhttp)
-{
-  var response = xhttp.responseText;
-  if (response=="logged_out")
-   {
-    window.location.href="login";
+    window.location.href="http://localhost/doa/login/";
    }
 }
 
@@ -1519,12 +1515,12 @@ function triggerModal()
 }
 
 //loads the unit, qualification, region and other section
-function loadData(name)
+function loadData()
 {
-  getQualification(name);
-  getUnit(name);
-  getRegion(name);
-  getOtherSection(name);
+  getQualification();
+  getUnit();
+  getRegion();
+  getOtherSection();
 }
 
 

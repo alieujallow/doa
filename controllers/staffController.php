@@ -4,7 +4,7 @@
 require_once('../classes/staff.php');
 
 //adds a staff to the system
-if (isset($_GET['add_staff']) & !empty($_GET['add_staff']))
+if (isset($_GET['determinant']) & !empty($_GET['determinant']))
 {
 	$firstName = $_GET["first_name"];
     $middleName = $_GET["middle_name"];
@@ -23,35 +23,56 @@ if (isset($_GET['add_staff']) & !empty($_GET['add_staff']))
     $unit = $_GET["unit"];
     $otherSection =$_GET["other_section"];
     $profilePic =$_GET["profile_pic"];
+    $determinant =$_GET["determinant"];
 
-    //sets the query
-    $sql = "INSERT INTO odg_staff(region_id,unit_id,other_section_id,qualification_id,first_name,middle_name,last_name,date_of_birth,gender,address,email,tel,date_of_appointment,payroll_number,grade,status,designation) VALUES('$region','$unit','$otherSection','$qualification',
-        '$firstName','$middleName','$lastName','$dateOfBirth','$gender','$address','$email',
-        '$telephone',' $dateOfAppointment','$payrollNumber','$grade','ACTIVE','$designation')";
-
-    //creates a staff class
-    $staff = new Staff;
-
-    if ($profilePic=="file_not_selected")
+    if ($determinant=="add_staff")
     {
-        $result = $staff->staffQuery($sql);
-        echo "staff_added";
+        //sets the query
+        $sql = "INSERT INTO odg_staff(region_id,unit_id,other_section_id,qualification_id,first_name,middle_name,last_name,date_of_birth,gender,address,email,tel,date_of_appointment,payroll_number,grade,status,designation) VALUES('$region','$unit','$otherSection','$qualification',
+            '$firstName','$middleName','$lastName','$dateOfBirth','$gender','$address','$email',
+            '$telephone',' $dateOfAppointment','$payrollNumber','$grade','ACTIVE','$designation')";
+
+        //creates a staff class
+        $staff = new Staff;
+
+        if ($profilePic=="file_not_selected")
+        {
+            $result = $staff->staffQuery($sql);
+            echo "staff_added";
+        }
+        else
+        {
+            $fileType=$_FILES["image"]["type"];
+            echo "pic";
+        }  
     }
-    else
+    //Edits a staff
+    else if ($determinant=="edit_staff")
     {
-        $fileType=$_FILES["image"]["type"];
+        //echo "staff_edited";
+        session_start();
+        $staffId = $_SESSION['staff_id'];
+        //sets the query
+        $sql = "UPDATE odg_staff SET region_id='$region',unit_id='$unit',other_section_id='$otherSection',qualification_id='$qualification',first_name='$firstName',middle_name='$middleName',last_name='$lastName',date_of_birth='$dateOfBirth',gender='$gender',address='$address',email='$email',tel='$telephone',date_of_appointment='$dateOfAppointment',payroll_number='$payrollNumber',grade='$grade',status='ACTIVE',designation='$designation' WHERE id='$staffId'";
 
-
-        /*$staff->staffQuery($sql);
-        $lastInsertedId = $staff->getLastStaffInsertedId();
-        $sql="INSERT INTO picture(staff_id) VALUES('$lastInsertedId')";
-        $result = $staff->staffQuery($sql);*/
-        echo "pic";
-    } 
+          //creates a staff class
+          $staff = new Staff;
+          if ($profilePic=="file_not_selected")
+          {
+            $result = $staff->staffQuery($sql);
+            echo "staff_edited"; 
+          }
+          else
+          {
+            $fileType=$_FILES["image"]["type"];
+            echo "pic";
+          }   
+    }
 }
-elseif (isset($_GET['getEmailAndPayroll']) & !empty($_GET['getEmailAndPayroll']))
+
+elseif (isset($_GET['emailPayroll']) & !empty($_GET['emailPayroll']))
 {
-	//gets the email and payroll number
+	//gets the email and payroll number and the indicator
 	$email = $_GET["email"];
 	$payrollNumber = $_GET["payroll_number"];
 
@@ -104,37 +125,37 @@ elseif (isset($_GET['search']) & !empty($_GET['search']))
      if ($firstName=="" & $lastName=="" & $payroll!="")
      {
         //sets the sql
-        $sql="SELECT first_name,middle_name,last_name,gender,designation FROM odg_staff WHERE status='ACTIVE' AND payroll_number LIKE '%$payroll%'";
+        $sql="SELECT id,first_name,middle_name,last_name,gender,designation FROM odg_staff WHERE status='ACTIVE' AND payroll_number LIKE '%$payroll%'";
      }
      else if ($firstName=="" & $lastName!="" & $payroll=="") 
      {
          //sets the sql
-        $sql="SELECT first_name,middle_name,last_name,gender,designation FROM odg_staff WHERE status='ACTIVE' AND last_name LIKE '%$lastName%'";
+        $sql="SELECT id,first_name,middle_name,last_name,gender,designation FROM odg_staff WHERE status='ACTIVE' AND last_name LIKE '%$lastName%'";
      }
      else if ($firstName!="" & $lastName=="" & $payroll=="") 
      {
          //sets the sql
-        $sql="SELECT first_name,middle_name,last_name,gender,designation FROM odg_staff WHERE status='ACTIVE' AND first_name LIKE '%$firstName%'";
+        $sql="SELECT id,first_name,middle_name,last_name,gender,designation FROM odg_staff WHERE status='ACTIVE' AND first_name LIKE '%$firstName%'";
      }
      else if ($firstName!="" & $lastName!="" & $payroll=="") 
      {
          //sets the sql
-        $sql="SELECT first_name,middle_name,last_name,gender,designation FROM odg_staff WHERE status='ACTIVE' AND first_name LIKE '%$firstName%' AND last_name LIKE '%$lastName%'";
+        $sql="SELECT id,first_name,middle_name,last_name,gender,designation FROM odg_staff WHERE status='ACTIVE' AND first_name LIKE '%$firstName%' AND last_name LIKE '%$lastName%'";
      }
      else if ($firstName!="" & $lastName =="" & $payroll!="") 
      {
          //sets the sql
-        $sql="SELECT first_name,middle_name,last_name,gender,designation FROM odg_staff WHERE status='ACTIVE' AND first_name LIKE '%$firstName%' AND payroll_number LIKE '%$payroll%'";
+        $sql="SELECT id,first_name,middle_name,last_name,gender,designation FROM odg_staff WHERE status='ACTIVE' AND first_name LIKE '%$firstName%' AND payroll_number LIKE '%$payroll%'";
      }
      else if ($firstName=="" & $lastName !="" & $payroll!="") 
      {
          //sets the sql
-        $sql="SELECT first_name,middle_name,last_name,gender,designation FROM odg_staff WHERE status='ACTIVE' AND last_name LIKE '%$lastName%' AND payroll_number LIKE '%$payroll%'";
+        $sql="SELECT id,first_name,middle_name,last_name,gender,designation FROM odg_staff WHERE status='ACTIVE' AND last_name LIKE '%$lastName%' AND payroll_number LIKE '%$payroll%'";
      }
      else if ($firstName!="" & $lastName !="" & $payroll!="") 
      {
          //sets the sql
-        $sql="SELECT first_name,middle_name,last_name,gender,designation FROM odg_staff WHERE status='ACTIVE' AND last_name LIKE '%$lastName%' AND payroll_number LIKE '%$payroll%' AND first_name LIKE '%$firstName%'";
+        $sql="SELECT id,first_name,middle_name,last_name,gender,designation FROM odg_staff WHERE status='ACTIVE' AND last_name LIKE '%$lastName%' AND payroll_number LIKE '%$payroll%' AND first_name LIKE '%$firstName%'";
      }
     //creates a staff class
     $staff = new Staff;
@@ -156,10 +177,10 @@ elseif (isset($_GET['staff_profile_information']) & !empty($_GET['staff_profile_
 
     //sets the sql
     $sql1="SELECT *FROM odg_staff WHERE status='ACTIVE' AND id='$staffId'";
-    $sql2="SELECT name FROM unit, odg_staff WHERE odg_staff.qualification_id=unit.id AND odg_staff.id='$staffId'";
-    $sql3="SELECT name FROM region, odg_staff WHERE odg_staff.qualification_id=region.id AND odg_staff.id='$staffId'";
+    $sql2="SELECT name FROM unit, odg_staff WHERE odg_staff.unit_id=unit.id AND odg_staff.id='$staffId'";
+    $sql3="SELECT name FROM region, odg_staff WHERE odg_staff.region_id=region.id AND odg_staff.id='$staffId'";
     $sql4="SELECT name FROM qualification, odg_staff WHERE odg_staff.qualification_id=qualification.id AND odg_staff.id='$staffId'";
-    $sql5="SELECT name FROM other_section, odg_staff WHERE odg_staff.qualification_id=other_section.id AND odg_staff.id='$staffId'";
+    $sql5="SELECT name FROM other_section, odg_staff WHERE odg_staff.other_section_id=other_section.id AND odg_staff.id='$staffId'";
 
     //creates a staff class
     $staff = new Staff;
