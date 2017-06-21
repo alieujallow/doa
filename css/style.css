@@ -37,15 +37,17 @@
 	margin-left: 10%;
 }
 
-#staff_card
+.staff_card
 {
 	width: 32%;
 	background-color:green;
 	float: left;
 	margin-top: 1%;
 	margin-left:1%;
-	box-shadow: 5px 5px 5px
+	box-shadow: 5px 5px 5px;
+	cursor: pointer; cursor: hand;
 }
+
 
 #staff_info_container
 {
@@ -63,4 +65,14 @@
 {
 	list-style-type: none;
 	margin-left: -17%;
+}
+
+#searchResult
+{
+	margin-left: 2%;
+}
+
+#profile
+{
+	height: 25%;
 }

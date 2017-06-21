@@ -28,6 +28,12 @@ elseif (isset($_GET['other_section']) & !empty($_GET['other_section']))
 	$sql="SELECT * FROM other_section";
 	getData($sql,"other_section");
 }
+//gets the user role list
+elseif (isset($_GET['role']) & !empty($_GET['role'])) 
+{
+	$sql="SELECT * FROM role";
+	getData($sql,"role");
+}
 
 //get data
 function getData($sql,$name)
