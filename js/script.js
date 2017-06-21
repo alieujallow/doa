@@ -320,11 +320,12 @@ function validateAddOtherSectionForm()
 //validates the add user form
 function validateAddUserForm()
 {
-  var usernameValidation = validateName("add_user_form","username","username_span");
+  var usernameValidation = validateName("add_user_form","username","add_user_span");
   var roleValidation = validateSelectInputField("add_user_form","role","role_span");
   if (usernameValidation & roleValidation) 
   {
-    addUser();
+    //checks if the username exists or not
+    confirmUsername("add_user_form");
   }
   return false;
 }
@@ -662,15 +663,74 @@ function validateChangeUsernameForm()
   if (usernameValidation) 
   {
     //checks if the username exists or not
-    addRegion();
+    confirmUsername("change_username_form");
   }
   return false;
 }
 
+function confirmUsername(formName)
+{
+  //gets the username
+  var username = document.forms[formName]["username"].value;
 
+  //sets the url
+  url="controllers/userController.php?newUsername="+username+"&formName="+formName;
 
+  //calls the ajax function
+  ajax(url, confirmUsernameResponse);
+}
 
+function confirmUsernameResponse(xhttp)
+{
+  var responseList = JSON.parse(xhttp.responseText);
+  if (responseList[0] =="change_username_form")
+  {
+    if (responseList[1] =="username_exists")
+    {
+      document.getElementById("change_username_span").innerHTML="username exists";
+    }
+    else if (responseList[1] =="username_does_not_exist")
+    {
+      //calls the function that changes the username
+      changeUsername();
+    }
+  }
+  else if (responseList[0] =="add_user_form")
+  {
+    if (responseList[1] =="username_exists")
+    {
+      document.getElementById("add_user_span").innerHTML="username exists";
+    }
+    else if (responseList[1] =="username_does_not_exist")
+    {
+      //calls the function that adds a user to the system
+      addUser();
+    }
+  }
+}
 
+function changeUsername()
+{
+  //gets the username
+  var username = document.forms["change_username_form"]["username"].value;
+
+  //sets the url
+  url="controllers/userController.php?changeUsername="+username;
+
+  //calls the ajax function
+  ajax(url, changeUsernameResponse);
+}
+
+function changeUsernameResponse(xhttp)
+{
+  var response = xhttp.responseText;
+  if (response =="username_changed")
+  {
+    document.getElementById("message").innerHTML="Username changed Successfully";
+    triggerModal();
+    document.getElementById("modalBtn").onclick=resetChangeUsernameForm;
+  }
+}
 
 //validates the edit Staff form
 function validateEditStaffForm()
@@ -1384,6 +1444,12 @@ function resetChangePasswordForm()
 {
   //resets the form
   document.getElementById("change_password_form").reset();
+}
+
+function resetChangeUsernameForm()
+{
+  //resets the form
+  document.getElementById("change_username_form").reset();
 }
 //*************************************************************
 //                    MANAGING USER

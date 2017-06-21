@@ -86,8 +86,60 @@ elseif (isset($_GET['getUserRole']) & !empty($_GET['getUserRole']))
     $userRole = $_SESSION['role_id'];
     echo $userRole;
 }
+elseif (isset($_GET['newUsername']) & !empty($_GET['newUsername']))
+{  
+    //gets the new username
+    $newUsername =$_GET['newUsername'];
 
- /*$newPass ="12";
- $newPass = password_hash($newPass,PASSWORD_DEFAULT);
- echo $newPass;*/
+    //gets the form name
+    $formName =$_GET['formName'];
+
+    //gets the current username
+    session_start();
+    $currentUsername = $_SESSION['username'];
+
+    if ($currentUsername != $newUsername)
+    {
+        //writes the sql
+        $sql = "SELECT *FROM user WHERE username='$newUsername'";
+
+        //creates a user object
+        $user= new User;
+        $result = $user->getUsername($sql);
+
+        //creates an array
+        $responseList= array($formName);
+
+        if ($result>0) 
+        {
+            $responseList[1]="username_exists";
+        }
+        else
+        {
+             $responseList[1]="username_does_not_exist";
+        }
+        echo json_encode($responseList);
+    }
+}
+elseif (isset($_GET['changeUsername']) & !empty($_GET['changeUsername']))
+{  
+    //gets the new username
+    $newUsername =$_GET['changeUsername'];
+
+    //gets the user id
+    session_start();
+    $userId = $_SESSION['userid'];
+
+    //writes the sql
+    $sql = "UPDATE user SET username='$newUsername' WHERE id='$userId'";
+
+    //creates a user object
+    $user= new User;
+    $result = $user->userQuery($sql);
+    if ($result)
+    {
+        echo "username_changed";
+    }
+}
+
 ?>

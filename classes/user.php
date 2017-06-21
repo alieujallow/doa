@@ -20,5 +20,14 @@ class User extends Dbconnection
 			return $row["password"];
 		}
 	}
+
+	//gets the username
+	function getUsername($sql)
+	{
+		if($this->query($sql))
+		{
+			return $this->getNumRows();
+		}
+	}
 }
 ?>

@@ -225,10 +225,10 @@
         <form name="change_username_form" onsubmit="return validateChangeUsernameForm()" action="" method="GET" id="change_username_form">
           <div class="form-group">
             <label>Username</label>
-            <input type="text" class="form-control" id="username" placeholder="Username" name="username">
+            <input type="text" class="form-control" id="username" placeholder="Enter New Username" name="username">
             <span id="change_username_span" style="color: red;"></span>
           </div>
-            <button type="submit" class="btn btn-success form-control">Add</button> 
+            <button type="submit" class="btn btn-success form-control">Save</button> 
         </form>
       </div>
     </div>
@@ -246,7 +246,7 @@
           <div class="form-group">
             <label>Username</label>
             <input type="text" class="form-control" id="username" placeholder="Username" name="username">
-            <span id="username_span" style="color: red;"></span>
+            <span id="add_user_span" style="color: red;"></span>
           </div>
           <div class="form-group">
             <label>Role</label><br>
