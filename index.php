@@ -19,7 +19,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body onload="checkUserLogin(),getUserName(),getHeader(),getStaffInfo()">
+  <body onload="checkUserLogin(),getUserName(),getHeader()">
     <div class="container-fluid">
       <div class="row">
         <script type="text/javascript" src="layout/navBar.js"></script>
@@ -64,35 +64,35 @@
 
     <div role="tabpanel" class="tab-pane" id="add_staff">
       <div></div><br>
-      <form name="add_staff_form" onsubmit="return validateAddStaffForm()" action="" method="GET" id="add_staff_form">
+      <form name="add_staff_form" onsubmit="return validateAddStaffForm()" action="" method="POST" id="add_staff_form" enctype="multipart/form-data">
         <div class="row">
           <div class="col-md-10">
               <div class="row">
                 <div class="form-group col-md-4">
                   <label>First Name</label><br>
-                  <input type="text" class="form-control" id="first_name" placeholder="First Name" name="first_name">
+                  <input type="text" class="form-control" id="first_name" placeholder="First Name" name="first_name" value="alieu">
                   <span id="add_staff_fname_span" style="color: red;"></span>
                 </div>
                 <div class="form-group col-md-4">
                   <label>Middle Name</label><br>
-                  <input type="text" class="form-control" id="middle_name" placeholder="Middle Name" name="middle_name">
+                  <input type="text" class="form-control" id="middle_name" placeholder="Middle Name" name="middle_name" value="asfsd">
                   <span id="add_staff_mname_span" style="color: red;"></span>
                 </div>
                 <div class="form-group col-md-4">
                   <label>Last Name</label><br>
-                  <input type="text" class="form-control" id="last_name" placeholder="Last Name" name="last_name">
+                  <input type="text" class="form-control" id="last_name" placeholder="Last Name" name="last_name" value="jallow">
                   <span id="add_staff_lname_span" style="color: red;"></span>
                 </div>
               </div><br>
               <div class="row">
                 <div class="form-group col-md-4">
                   <label>date of birth</label><br>
-                  <input type="date" class="form-control" id="date_of_birth">
+                  <input type="date" class="form-control" id="date_of_birth" name="date_of_birth">
                   <span id="date_of_birth_span" style="color: red;"></span>
                 </div>
                 <div class="form-group col-md-4">
                   <label>Gender</label><br>
-                  <select id="gender" class="form-control">
+                  <select id="gender" class="form-control" name="gender">
                     <option value="">Select..</option>
                     <option value="M">Male</option>
                     <option value="F">Female</option>
@@ -101,14 +101,14 @@
                 </div>
                 <div class="form-group col-md-4">
                   <label>Designation</label><br>
-                  <input type="text" class="form-control" id="designation" placeholder="designation">
+                  <input type="text" class="form-control" id="designation" placeholder="designation" name="designation">
                   <span id="designation_span" style="color: red;"></span>
                 </div>
               </div><br>
               <div class="row">
                 <div class="form-group col-md-4">
                   <label>Address</label><br>
-                  <input type="text" class="form-control" id="address" placeholder="address">
+                  <input type="text" class="form-control" id="address" placeholder="address" name="address">
                   <span id="add_staff_address_span" style="color: red;"></span>
                 </div>
                 <div class="form-group col-md-4">
@@ -125,7 +125,7 @@
               <div class="row">
                 <div class="form-group col-md-4">
                   <label>Date of Appointment</label><br>
-                  <input type="date" class="form-control" id="date_of_appointment">
+                  <input type="date" class="form-control" id="date_of_appointment" name="date_of_appointment">
                   <span id="date_of_appointment_span" style="color: red;"></span>
                 </div>
                 <div class="form-group col-md-4">
@@ -135,28 +135,28 @@
                 </div>
                 <div class="form-group col-md-4">
                   <label>Grade</label><br>
-                  <input type="text" class="form-control" id="grade" placeholder="grade">
+                  <input type="text" class="form-control" id="grade" placeholder="grade" name="grade">
                   <span id="add_staff_grade_span" style="color: red;"></span>
                 </div>
               </div><br>
               <div class="row">
                 <div class="form-group col-md-4">
                   <label>Qualification</label><br>
-                  <select id="qualification" class="form-control">
+                  <select id="qualification" class="form-control" name="qualification">
                     <option value="">Select...</option>
                   </select>
                   <span id="qualification_span" style="color: red;"></span>
                 </div>
                 <div class="form-group col-md-4">
                   <label>Region</label><br>
-                  <select id="region" class="form-control">
+                  <select id="region" class="form-control" name="region">
                     <option value="">Select..</option>
                   </select>
                   <span id="region_span" style="color: red;"></span>
                 </div>
                 <div class="form-group col-md-4">
                   <label>Unit</label><br>
-                  <select id="unit" class="form-control">
+                  <select id="unit" class="form-control" name="unit">
                     <option value="">Select...</option>
                   </select>
                   <span id="unit_span" style="color: red;"></span>
@@ -165,7 +165,7 @@
               <div class="row">
                 <div class="form-group col-md-4">
                   <label>Other Section</label><br>
-                  <select id="other_section" class="form-control">
+                  <select id="other_section" class="form-control" name="other_section">
                     <option value="">Select..</option>
                   </select>
                   <span id="other_section_span" style="color: red;"></span>
@@ -176,7 +176,7 @@
                 </div>
                 <div class="form-group col-md-4">
                   <label></label><br>
-                  <button type="submit" class="btn btn-primary btn-lg form-control">Save</button>
+                  <button type="submit" class="btn btn-primary btn-lg form-control" name="save">Save</button>
                 </div>
               </div>
           </div>

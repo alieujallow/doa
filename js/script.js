@@ -370,7 +370,9 @@ function validatePhoto()
       if (fileSize<=20000) 
       {
         var file= filePicker.files[0];
-        img.src = window.URL.createObjectURL(file);
+        var url = window.URL.createObjectURL(file);
+        img.src = url;
+
         profilePictureSpan.innerHTML="";
         return true;
       }
@@ -948,9 +950,58 @@ function addOtherSection()
 //********************************************************************
 
 //adds a staff to the systme
-function addStaff(form_name,determinant)
+function addStaff(formId,action)
 {
-   //collects the form data
+    //jquery ajax
+    var form_data = new FormData();  
+    var picSelection=getStaffProfilePic();
+
+    //collecting form data
+    form_data.append('firstName',   $(formId +" input[name=first_name]").val());
+    form_data.append('middleName',  $(formId +" input[name=middle_name]").val());
+    form_data.append('lastName',    $(formId +" input[name=last_name]").val());
+    form_data.append('dateOfBirth',  $(formId +" input[name=date_of_birth]").val());
+    form_data.append('gender',       $(formId +" select[name=gender]").val());
+    form_data.append('designation',   $(formId +" input[name=designation]").val());
+    form_data.append('address',  $(formId +" input[name=address]").val());
+    form_data.append('email', $(formId +" input[name=email]").val());
+    form_data.append('telephone',   $(formId +" input[name=telephone]").val());
+    form_data.append('dateOfAppointment',  $(formId +" input[name=date_of_appointment]").val());
+    form_data.append('qualification', $(formId +" select[name=qualification]").val());
+    form_data.append('grade',   $(formId +" input[name=grade]").val());
+    form_data.append('region',  $(formId +" select[name=region]").val());
+    form_data.append('unit', $(formId +" select[name=unit]").val());
+    form_data.append('otherSection', $(formId +" select[name=other_section]").val());
+    form_data.append('payrollNumber', $(formId +" input[name=payroll_number]").val());
+
+    form_data.append('action',action);
+    form_data.append('picSelection',picSelection);
+
+    if (picSelection!="file_not_selected")
+    {
+      var file_data = $('#picture_picker').prop('files')[0];  
+      form_data.append('profile_pic', file_data);
+    }
+         
+    $.ajax({
+      url: "controllers/staffController.php?", 
+      type: "POST",            
+      data: form_data, 
+      dataType: 'text',
+      contentType: false,       
+      cache: false,             
+      processData:false,        
+      success: function(data)   
+      {
+        if (data == "staff_added")
+        {
+          document.getElementById("message").innerHTML="Staff Added Successfully";
+          triggerModal();
+          document.getElementById("modalBtn").onclick=resetStaffForm;
+        }
+      }
+    });
+   /*//collects the form data
     var firstName = document.forms[form_name]["first_name"].value;
     var middleName = document.forms[form_name]["middle_name"].value;
     var lastName = document.forms[form_name]["last_name"].value;
@@ -993,7 +1044,7 @@ function addStaff(form_name,determinant)
     }
 
     //calls the ajax function
-    ajax(url, printAddStaffResponse);
+    ajax(url, printAddStaffResponse);*/
 }
 
 //prints addstaff response
@@ -1008,7 +1059,8 @@ function printAddStaffResponse(xhttp)
   }
   else if(response=="pic")
   {
-     document.getElementById("email_span").innerHTML="pic added";
+     document.getElementById("message").innerHTML="image Successfully";
+     triggerModal();
   }
   else if(response=="staff_edited")
   {
@@ -1055,9 +1107,9 @@ function printStaffInfo(xhttp)
     staffCard.setAttribute("class","staff_card");
     staffCard.setAttribute("id",record["id"]);
     staffCard.addEventListener("click", function()
-      {
+    {
         getStaffId(this.id);
-      });
+    });
 
     //creates a row
     var row= document.createElement('div');
@@ -1341,7 +1393,7 @@ function emailPayrollResponse(xhttp)
 
     if (count==2) 
     {
-       addStaff("add_staff_form","add_staff");
+       addStaff("#add_staff_form","add_staff");
     }
 }
 
@@ -1593,16 +1645,12 @@ function loadData()
 //returns profile picture
 function getStaffProfilePic()
 {
-   var file="file_not_selected";
     //validates the picture
     if(validatePhoto())
     {
-      var filePicker=document.getElementById("picture_picker");
-      file= filePicker.files[0];
-
-      // you just add this
-      var formData = new FormData();
-      return formData.append('image', file); 
+      return "file_selected";
     }
-    return file;
+    return "file_not_selected";
 }
+
+

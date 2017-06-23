@@ -4,28 +4,32 @@
 require_once('../classes/staff.php');
 
 //adds a staff to the system
-if (isset($_GET['determinant']) & !empty($_GET['determinant']))
+if (isset($_POST['action']) & !empty($_POST['action']))
 {
-	$firstName = $_GET["first_name"];
-    $middleName = $_GET["middle_name"];
-    $lastName = $_GET["last_name"];
-    $dateOfBirth = $_GET["date_of_birth"];
-    $gender = $_GET["gender"];
-    $designation = $_GET["designation"];
-    $address = $_GET["address"];
-    $email = $_GET["email"];
-    $telephone =$_GET["telephone"];
-    $dateOfAppointment = $_GET["date_of_appointment"];
-    $payrollNumber = $_GET["payroll_number"];
-    $grade =$_GET["grade"];
-    $qualification = $_GET["qualification"];
-    $region = $_GET["region"];
-    $unit = $_GET["unit"];
-    $otherSection =$_GET["other_section"];
-    $profilePic =$_GET["profile_pic"];
-    $determinant =$_GET["determinant"];
+    //gets the form data and the action and the pic selection
+    $action = $_POST['action'];
 
-    if ($determinant=="add_staff")
+    $picSelection = $_POST['picSelection'];
+
+    $firstName = $_POST['firstName'];
+    $middleName = $_POST['middleName'];
+    $lastName = $_POST['lastName'];
+    $dateOfBirth = $_POST["dateOfBirth"];
+    $gender = $_POST["gender"];
+    $designation = $_POST["designation"];
+    $address = $_POST["address"];
+    $email = $_POST["email"];
+    $telephone =$_POST["telephone"];
+    $dateOfAppointment = $_POST["dateOfAppointment"];
+    $payrollNumber = $_POST["payrollNumber"];
+    $grade =$_POST["grade"];
+    $qualification = $_POST["qualification"];
+    $region = $_POST["region"];
+    $unit = $_POST["unit"];
+    $otherSection =$_POST["otherSection"];
+
+    //checks whether the user wants to edit or add staff information
+    if ($action=="add_staff")
     {
         //sets the query
         $sql = "INSERT INTO odg_staff(region_id,unit_id,other_section_id,qualification_id,first_name,middle_name,last_name,date_of_birth,gender,address,email,tel,date_of_appointment,payroll_number,grade,status,designation) VALUES('$region','$unit','$otherSection','$qualification',
@@ -35,18 +39,41 @@ if (isset($_GET['determinant']) & !empty($_GET['determinant']))
         //creates a staff class
         $staff = new Staff;
 
-        if ($profilePic=="file_not_selected")
+        if ($picSelection=="file_not_selected")
         {
             $result = $staff->staffQuery($sql);
             echo "staff_added";
         }
-        else
+        else if ($picSelection=="file_selected")
         {
-            $fileType=$_FILES["image"]["type"];
-            echo "pic";
+            //getting image properties
+            $name = $_FILES["profile_pic"]["name"];
+            $size = $_FILES["profile_pic"]["size"];
+            $type = $_FILES["profile_pic"]["type"];
+            $error = $_FILES["profile_pic"]["error"];
+            $tempName =$_FILES["profile_pic"]["tmp_name"];
+            $content = addslashes(file_get_contents($tempName));
+
+            //queries adds the user 
+            $result = $staff->staffQuery($sql);
+
+            //gets the last inserted id
+            $lastInsertedId = $staff->getLastStaffInsertedId();
+
+            //sets the querry for insering the profile picture
+            $sql="INSERT INTO picture(staff_id,type,name,size,content) VALUES('$lastInsertedId','$type','$name','$size','$content')";
+
+            //adds the proile picture
+            $result = $staff->staffQuery($sql);
+            echo "staff_added";
         }  
     }
-    //Edits a staff
+    else if ($action=="edit_staff")
+    {
+        
+    }
+
+    /*//Edits a staff
     else if ($determinant=="edit_staff")
     {
         //echo "staff_edited";
@@ -66,10 +93,9 @@ if (isset($_GET['determinant']) & !empty($_GET['determinant']))
           {
             $fileType=$_FILES["image"]["type"];
             echo "pic";
-          }   
-    }
+          }  
+    }*/
 }
-
 elseif (isset($_GET['emailPayroll']) & !empty($_GET['emailPayroll']))
 {
 	//gets the email and payroll number and the indicator
@@ -114,7 +140,6 @@ elseif (isset($_GET['staff_info']) & !empty($_GET['staff_info']))
 
     echo json_encode($rows);
 }
-
 elseif (isset($_GET['search']) & !empty($_GET['search']))
 {
     //gets the values

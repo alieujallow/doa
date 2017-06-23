@@ -10,7 +10,7 @@ document.write
             '<span class="icon-bar"></span>'+
           '</button>'+
           '<div style="float: left;">'+
-            '<img src="http://localhost/doa/img/mainLogo.PNG" alt="" class="img-circle" width="60" height="60" id="profile_picture">'+
+            '<img src="http://localhost/doa/img/mainLogo.PNG" alt="" class="img-circle" width="60" height="60">'+
           '</div>'+
           '<a class="navbar-brand" href="#" style="margin-top:5%;"> Department of Agriculture</a>'+
         '</div>'+
