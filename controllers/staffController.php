@@ -31,40 +31,46 @@ if (isset($_POST['action']) & !empty($_POST['action']))
     //checks whether the user wants to edit or add staff information
     if ($action=="add_staff")
     {
-        //sets the query
-        $sql = "INSERT INTO odg_staff(region_id,unit_id,other_section_id,qualification_id,first_name,middle_name,last_name,date_of_birth,gender,address,email,tel,date_of_appointment,payroll_number,grade,status,designation) VALUES('$region','$unit','$otherSection','$qualification',
-            '$firstName','$middleName','$lastName','$dateOfBirth','$gender','$address','$email',
-            '$telephone',' $dateOfAppointment','$payrollNumber','$grade','ACTIVE','$designation')";
-
         //creates a staff class
         $staff = new Staff;
 
         if ($picSelection=="file_not_selected")
         {
+          //sets the query
+            $sql = "INSERT INTO odg_staff(region_id,unit_id,other_section_id,qualification_id,first_name,middle_name,last_name,date_of_birth,gender,address,email,tel,date_of_appointment,payroll_number,grade,status,designation) VALUES('$region','$unit','$otherSection','$qualification',
+            '$firstName','$middleName','$lastName','$dateOfBirth','$gender','$address','$email',
+            '$telephone',' $dateOfAppointment','$payrollNumber','$grade','ACTIVE','$designation')";
             $result = $staff->staffQuery($sql);
             echo "staff_added";
         }
         else if ($picSelection=="file_selected")
         {
+            $target_dir = "../img/profile_pic/";
             //getting image properties
             $name = $_FILES["profile_pic"]["name"];
             $size = $_FILES["profile_pic"]["size"];
             $type = $_FILES["profile_pic"]["type"];
             $error = $_FILES["profile_pic"]["error"];
             $tempName =$_FILES["profile_pic"]["tmp_name"];
-            $content = addslashes(file_get_contents($tempName));
 
-            //queries adds the user 
+            //Renames the picture if it already exists.
+            $i = 0;
+            $parts = pathinfo($name);
+            while (file_exists($target_dir.$name))
+            {
+              $i++;
+              $name = $parts["filename"] . "-" . $i . "." . $parts["extension"];
+            }
+
+            $sql = "INSERT INTO odg_staff(region_id,unit_id,other_section_id,qualification_id,first_name,middle_name,last_name,date_of_birth,gender,address,email,tel,date_of_appointment,payroll_number,grade,status,designation,profile_pic) VALUES('$region','$unit','$otherSection','$qualification',
+            '$firstName','$middleName','$lastName','$dateOfBirth','$gender','$address','$email',
+            '$telephone',' $dateOfAppointment','$payrollNumber','$grade','ACTIVE','$designation','$name')";
+
+            //adds the user and the profile pic
             $result = $staff->staffQuery($sql);
 
-            //gets the last inserted id
-            $lastInsertedId = $staff->getLastStaffInsertedId();
-
-            //sets the querry for insering the profile picture
-            $sql="INSERT INTO picture(staff_id,type,name,size,content) VALUES('$lastInsertedId','$type','$name','$size','$content')";
-
-            //adds the proile picture
-            $result = $staff->staffQuery($sql);
+            //moves the profile pic to the target directory
+            move_uploaded_file($tempName, $target_dir.$name);
             echo "staff_added";
         }  
     }
@@ -130,15 +136,15 @@ elseif (isset($_GET['emailPayroll']) & !empty($_GET['emailPayroll']))
 elseif (isset($_GET['staff_info']) & !empty($_GET['staff_info']))
 {
 	//sets the sql
-	$sql="SELECT id,first_name,middle_name,last_name,gender,designation FROM odg_staff WHERE status='ACTIVE'";
+	$sql="SELECT id,first_name,middle_name,last_name,gender,designation,profile_pic FROM odg_staff WHERE status='ACTIVE'";
 
 	//creates a staff class
-    $staff = new Staff;
+  $staff = new Staff;
 
-    //gets the rows of all the staff
-    $rows = $staff->getStaffInfo($sql);
+  //gets the rows of all the staff
+  $rows = $staff->getStaffInfo($sql);
 
-    echo json_encode($rows);
+  echo json_encode($rows);
 }
 elseif (isset($_GET['search']) & !empty($_GET['search']))
 {

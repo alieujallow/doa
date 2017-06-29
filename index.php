@@ -19,7 +19,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body onload="checkUserLogin(),getUserName(),getHeader()">
+  <body onload="checkUserLogin(),getUserName(),getHeader(),getStaffInfo()">
     <div class="container-fluid">
       <div class="row">
         <script type="text/javascript" src="layout/navBar.js"></script>

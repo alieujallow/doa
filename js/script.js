@@ -367,7 +367,7 @@ function validatePhoto()
    if (fileExtension =="jpeg" || fileExtension =="jpg" || fileExtension =="png" || fileExtension =="gif")
     {
       //checks for the file size
-      if (fileSize<=20000) 
+      if (fileSize<=1000000) 
       {
         var file= filePicker.files[0];
         var url = window.URL.createObjectURL(file);
@@ -1225,8 +1225,17 @@ function printStaffInfo(xhttp)
 
     //creates an image
     var image= document.createElement('img');
-    //sets the attribute of the image
-    image.setAttribute("src","img/placeHolder.JPG");
+
+    if (record["profile_pic"]=="")
+    {
+      //sets the attribute of the image if the profile pic is empty
+      image.setAttribute("src","img/placeHolder.jpg");
+    }
+    else
+    {
+      //sets the attribute of the image
+      image.setAttribute("src","img/profile_pic/"+record["profile_pic"]);
+    }
     image.setAttribute("class","img-circle img-responsive");
     image.setAttribute("width","90");
     image.setAttribute("height","90");
@@ -1304,7 +1313,15 @@ function printStaffProfileInformation(xhttp)
   document.getElementById('Pnumber').innerHTML=staffInfo['payroll_number'];
   document.getElementById('gr').innerHTML=staffInfo['grade'];
   document.getElementById('desig').innerHTML=staffInfo['designation'];
-  
+
+  if (staffInfo['profile_pic']=="")
+  {
+    document.getElementById('profile_picture_view').src="../img/placeHolder.jpg";
+  }
+  else
+  {
+    document.getElementById('profile_picture_view').src="../img/profile_pic/"+staffInfo['profile_pic'];
+  }
   document.getElementById('qual').innerHTML=$qualificationInfo['name'];
   document.getElementById('re').innerHTML=regionInfo['name'];
   document.getElementById('uni').innerHTML=unitInfo['name'];
@@ -1350,6 +1367,14 @@ function editStaffProfileResponse(xhttp)
     document.forms["edit_staff_form"]["region"].value=staffInfo['region_id'];
     document.forms["edit_staff_form"]["unit"].value=staffInfo['unit_id'];
     document.forms["edit_staff_form"]["other_section"].value=staffInfo['other_section_id'];
+    if (staffInfo['profile_pic']=="")
+    {
+      document.forms["edit_staff_form"]["edit_staff_profile_picture"].src="../img/placeHolder.jpg";
+    }
+    else
+    {
+      document.forms["edit_staff_form"]["edit_staff_profile_picture"].src="../img/profile_pic/"+staffInfo['profile_pic'];
+    }
 }
 
 //gets email and payroll
